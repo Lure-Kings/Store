@@ -13,13 +13,13 @@
 
 body {
     font-family: 'Georgia', serif;
-    background-color: #f5f6f5;
-    color: #2d3436;
+    background-color: #e6f0fa;
+    color: #1e3a8a;
     line-height: 1.6;
 }
 
 .header {
-    background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+    background: linear-gradient(135deg, #1e3a8a 0%, #60a5fa 100%);
     color: white;
     padding: 1.5rem 2rem;
     position: sticky;
@@ -49,30 +49,13 @@ body {
 .logo svg {
     width: 30px;
     height: 30px;
-    fill: #d4a017;
+    fill: #93c5fd;
     cursor: pointer;
     transition: transform 0.3s ease;
 }
 
 .logo svg:hover {
     transform: scale(1.1);
-}
-
-.nav {
-    display: flex;
-    gap: 2.5rem;
-    align-items: center;
-}
-
-.nav a {
-    color: white;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: color 0.3s;
-}
-
-.nav a:hover {
-    color: #d4a017;
 }
 
 .cart-icon {
@@ -85,7 +68,7 @@ body {
     position: absolute;
     top: -8px;
     right: -8px;
-    background: #c0392b;
+    background: #1e40af;
     color: white;
     border-radius: 50%;
     width: 20px;
@@ -97,7 +80,7 @@ body {
 }
 
 .hero {
-    background: linear-gradient(rgba(45, 52, 54, 0.8), rgba(99, 110, 114, 0.8)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%232d3436" width="1200" height="600"/><path fill="%23ffffff" opacity="0.1" d="M0,300 Q300,200 600,300 T1200,300 V600 H0 Z"/></svg>');
+    background: linear-gradient(rgba(30, 58, 138, 0.8), rgba(96, 165, 250, 0.8)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%231e3a8a" width="1200" height="600"/><path fill="%23ffffff" opacity="0.1" d="M0,300 Q300,200 600,300 T1200,300 V600 H0 Z"/></svg>');
     color: white;
     padding: 5rem 2rem;
     text-align: center;
@@ -127,8 +110,8 @@ body {
 }
 
 .filter-btn {
-    background: #dfe6e9;
-    color: #2d3436;
+    background: #bfdbfe;
+    color: #1e3a8a;
     border: none;
     padding: 0.5rem 1.5rem;
     border-radius: 20px;
@@ -138,7 +121,7 @@ body {
 }
 
 .filter-btn.active, .filter-btn:hover {
-    background: #2d3436;
+    background: #1e3a8a;
     color: white;
 }
 
@@ -149,10 +132,25 @@ body {
 }
 
 .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
+    overflow-x: auto;
     gap: 2rem;
     margin-top: 2rem;
+    padding-bottom: 1rem;
+    scroll-behavior: smooth;
+}
+
+.product-grid::-webkit-scrollbar {
+    height: 8px;
+}
+
+.product-grid::-webkit-scrollbar-thumb {
+    background: #60a5fa;
+    border-radius: 4px;
+}
+
+.product-grid::-webkit-scrollbar-track {
+    background: #bfdbfe;
 }
 
 .product-card {
@@ -161,6 +159,7 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex: 0 0 300px;
 }
 
 .product-card:hover {
@@ -215,13 +214,13 @@ body {
     font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: #2d3436;
+    color: #1e3a8a;
 }
 
 .product-price {
     font-size: 1.3rem;
     font-weight: 700;
-    color: #0984e3;
+    color: #2563eb;
     margin-bottom: 1rem;
 }
 
@@ -238,17 +237,17 @@ body {
 }
 
 .star {
-    color: #d4a017;
+    color: #93c5fd;
 }
 
 .rating-text {
     font-size: 0.9rem;
-    color: #636e72;
+    color: #4b5e8e;
 }
 
 .add-to-cart-btn {
     width: 100%;
-    background: #2d3436;
+    background: #1e3a8a;
     color: white;
     border: none;
     padding: 12px;
@@ -259,7 +258,7 @@ body {
 }
 
 .add-to-cart-btn:hover {
-    background: #636e72;
+    background: #60a5fa;
 }
 
 .modal {
@@ -301,24 +300,24 @@ body {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #2d3436;
+    color: #1e3a8a;
 }
 
 .form-group input, .form-group textarea, .form-group select {
     width: 100%;
     padding: 12px;
-    border: 1px solid #dfe6e9;
+    border: 1px solid #bfdbfe;
     border-radius: 6px;
     font-size: 1rem;
 }
 
 .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
     outline: none;
-    border-color: #2d3436;
+    border-color: #1e3a8a;
 }
 
 .btn {
-    background: #2d3436;
+    background: #1e3a8a;
     color: white;
     border: none;
     padding: 12px 24px;
@@ -330,22 +329,22 @@ body {
 }
 
 .btn:hover {
-    background: #636e72;
+    background: #60a5fa;
 }
 
 .btn-danger {
-    background: #c0392b;
+    background: #1e40af;
 }
 
 .btn-danger:hover {
-    background: #e74c3c;
+    background: #3b82f6;
 }
 
 .notification {
     position: fixed;
     top: 20px;
     right: 20px;
-    background: #0984e3;
+    background: #2563eb;
     color: white;
     padding: 1rem 2rem;
     border-radius: 6px;
@@ -377,7 +376,7 @@ body {
 }
 
 .cart-header {
-    background: #2d3436;
+    background: #1e3a8a;
     color: white;
     padding: 1.5rem;
     display: flex;
@@ -393,7 +392,7 @@ body {
     display: flex;
     gap: 1rem;
     padding: 1rem 0;
-    border-bottom: 1px solid #dfe6e9;
+    border-bottom: 1px solid #bfdbfe;
 }
 
 .cart-item img {
@@ -408,7 +407,7 @@ body {
 }
 
 .shipping-calculator {
-    background: #f5f6f5;
+    background: #e6f0fa;
     padding: 1.5rem;
     border-radius: 6px;
     margin: 1rem 0;
@@ -416,7 +415,7 @@ body {
 
 .checkout-section {
     padding: 1.5rem;
-    border-top: 2px solid #dfe6e9;
+    border-top: 2px solid #bfdbfe;
 }
 
 .reviews-section {
@@ -429,7 +428,7 @@ body {
 
 .review-item {
     padding: 1rem 0;
-    border-bottom: 1px solid #dfe6e9;
+    border-bottom: 1px solid #bfdbfe;
 }
 
 .review-header {
@@ -454,7 +453,7 @@ body {
     }
 
     .product-grid {
-        grid-template-columns: 1fr;
+        flex-direction: row;
     }
 
     .cart-sidebar {
@@ -474,21 +473,15 @@ body {
 <header class="header">
     <div class="header-content">
         <div class="logo">
-            <svg onclick="promptAdminPassword()" viewBox="0 0 24 24">
-                <path d="M12 2.5c-1.1 0-2 .9-2 2v1.5h4V4.5c0-1.1-.9-2-2-2zm6 3.5v1.2c1.7.6 3 2.2 3 4.1 0 2.5-2 4.5-4.5 4.5S12 13.8 12 11.3c0-1.9 1.2-3.5 2.9-4.1V6h-4v1.2C12.3 7.8 13.5 9.4 13.5 11.3c0 2.5-2 4.5-4.5 4.5S4.5 13.8 4.5 11.3c0-1.9 1.2-3.5 2.9-4.1V6H2v3.5h1.5v2.5c0 3.6 2.9 6.5 6.5 6.5s6.5-2.9 6.5-6.5c0-1.2-.3-2.3-.9-3.3h2.4V6h-1.5z"/>
+            <svg onclick="handleLogoClick()" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm5-9h-3V7h-2v4H7v2h5v4h2v-4h3z"/>
             </svg>
             <span>Lure Kings</span>
         </div>
-        <nav class="nav">
-            <a href="#home">Home</a>
-            <a href="#products">Products</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-            <div class="cart-icon" onclick="toggleCart()">
-                🛒
-                <span class="cart-count" id="cartCount">0</span>
-            </div>
-        </nav>
+        <div class="cart-icon" onclick="toggleCart()">
+            🛒
+            <span class="cart-count" id="cartCount">0</span>
+        </div>
     </div>
 </header>
 
@@ -600,8 +593,8 @@ body {
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Image URLs (comma separated)</label>
-                    <textarea id="productImages" rows="2" placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"></textarea>
+                    <label>Product Images</label>
+                    <input type="file" id="productImageFiles" accept="image/*" multiple>
                 </div>
                 <button type="submit" class="btn">Add Product</button>
             </form>
@@ -678,7 +671,7 @@ body {
                     <option value="bank">Bank Transfer</option>
                 </select>
             </div>
-            <div id="orderSummary" style="background: #f5f6f5; padding: 1rem; border-radius: 6px; margin: 1rem 0;"></div>
+            <div id="orderSummary" style="background: #e6f0fa; padding: 1rem; border-radius: 6px; margin: 1rem 0;"></div>
             <div style="display: flex; gap: 1rem;">
                 <button type="submit" class="btn">Complete Order</button>
                 <button type="button" class="btn" onclick="closeCheckout()">Cancel</button>
@@ -736,6 +729,15 @@ let products = JSON.parse(localStorage.getItem('products')) || [
         category: "reels",
         images: ["data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150'><rect fill='%23e6f3ff' width='200' height='150'/><circle fill='%23666' cx='100' cy='75' r='40' stroke='%23333' stroke-width='3' fill='none'/><circle fill='%23333' cx='100' cy='75' r='20'/><text x='100' y='140' text-anchor='middle' font-family='Arial' font-size='12' fill='%23333'>Spinning Reel</text></svg>"],
         reviews: []
+    },
+    {
+        id: 4,
+        name: "Pro Crankbait Set",
+        price: 34.99,
+        description: "Set of 5 deep-diving crankbaits designed for targeting large freshwater fish.",
+        category: "crankbaits",
+        images: ["data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150'><rect fill='%23e6f3ff' width='200' height='150'/><rect fill='%23ff6b35' x='50' y='50' width='100' height='30' rx='15'/><text x='100' y='130' text-anchor='middle' font-family='Arial' font-size='12' fill='%23333'>Crankbait Set</text></svg>"],
+        reviews: []
     }
 ];
 
@@ -744,6 +746,7 @@ let orders = JSON.parse(localStorage.getItem('orders')) || [];
 let websiteReviews = JSON.parse(localStorage.getItem('websiteReviews')) || [];
 let isAdminMode = false;
 const ADMIN_PASSWORD = 'maxchingerhambo';
+let logoClickCount = 0;
 let currentFilter = 'all';
 
 // Initialize the application
@@ -752,6 +755,7 @@ function init() {
     updateCartDisplay();
     loadReviews();
     calculateOverallRating();
+    saveData();
 }
 
 // Save data to localStorage
@@ -760,6 +764,15 @@ function saveData() {
     localStorage.setItem('cart', JSON.stringify(cart));
     localStorage.setItem('orders', JSON.stringify(orders));
     localStorage.setItem('websiteReviews', JSON.stringify(websiteReviews));
+}
+
+// Handle logo clicks for admin access
+function handleLogoClick() {
+    logoClickCount++;
+    if (logoClickCount >= 3) {
+        promptAdminPassword();
+        logoClickCount = 0;
+    }
 }
 
 // Prompt for admin password
@@ -784,6 +797,7 @@ document.getElementById('adminPasswordForm').addEventListener('submit', function
 // Close admin password modal
 function closeAdminPasswordModal() {
     document.getElementById('adminPasswordModal').style.display = 'none';
+    logoClickCount = 0;
 }
 
 // Toggle admin mode
@@ -917,7 +931,7 @@ function generateStarDisplay(rating) {
 
     const remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
     for (let i = 0; i < remainingStars; i++) {
-        stars += '<span class="star" style="color: #b2bec3;">★</span>';
+        stars += '<span class="star" style="color: #bfdbfe;">★</span>';
     }
 
     return stars;
@@ -968,9 +982,9 @@ function updateCartDisplay() {
                 <div style="font-weight: bold;">${item.name}</div>
                 <div>$${item.price} x ${item.quantity}</div>
                 <div style="margin-top: 5px;">
-                    <button onclick="updateCartQuantity(${item.id}, -1)" style="background: #c0392b; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">-</button>
+                    <button onclick="updateCartQuantity(${item.id}, -1)" style="background: #1e40af; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">-</button>
                     <span style="margin: 0 10px;">${item.quantity}</span>
-                    <button onclick="updateCartQuantity(${item.id}, 1)" style="background: #0984e3; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">+</button>
+                    <button onclick="updateCartQuantity(${item.id}, 1)" style="background: #2563eb; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">+</button>
                 </div>
             </div>
         `;
@@ -1128,7 +1142,7 @@ function loadAdminProducts() {
 
     products.forEach(product => {
         const productDiv = document.createElement('div');
-        productDiv.style.cssText = 'border: 1px solid #dfe6e9; padding: 1rem; margin: 1rem 0; border-radius: 6px;';
+        productDiv.style.cssText = 'border: 1px solid #bfdbfe; padding: 1rem; margin: 1rem 0; border-radius: 6px;';
         productDiv.innerHTML = `
             <h4>${product.name}</h4>
             <p>Price: ${product.price}</p>
@@ -1152,7 +1166,7 @@ function loadAdminOrders() {
 
     orders.forEach(order => {
         const orderDiv = document.createElement('div');
-        orderDiv.style.cssText = 'border: 1px solid #dfe6e9; padding: 1rem; margin: 1rem 0; border-radius: 6px;';
+        orderDiv.style.cssText = 'border: 1px solid #bfdbfe; padding: 1rem; margin: 1rem 0; border-radius: 6px;';
         orderDiv.innerHTML = `
             <h4>Order ${order.orderId}</h4>
             <p><strong>Customer:</strong> ${order.customerName} (${order.customerEmail})</p>
@@ -1188,7 +1202,7 @@ function loadAdminReviews() {
 
     allReviews.forEach((review, index) => {
         const reviewDiv = document.createElement('div');
-        reviewDiv.style.cssText = 'border: 1px solid #dfe6e9; padding: 1rem; margin: 1rem 0; border-radius: 6px;';
+        reviewDiv.style.cssText = 'border: 1px solid #bfdbfe; padding: 1rem; margin: 1rem 0; border-radius: 6px;';
         reviewDiv.innerHTML = `
             <h4>${review.name}</h4>
             <p><strong>Rating:</strong> ${generateStarDisplay(review.rating)}</p>
@@ -1205,26 +1219,33 @@ function loadAdminReviews() {
 document.getElementById('productForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const newProduct = {
-        id: Date.now(),
-        name: document.getElementById('productName').value,
-        price: parseFloat(document.getElementById('productPrice').value),
-        description: document.getElementById('productDescription').value,
-        category: document.getElementById('productCategory').value,
-        images: document.getElementById('productImages').value.split(',').map(img => img.trim()).filter(img => img),
-        reviews: []
-    };
+    const files = document.getElementById('productImageFiles').files;
+    const imagePromises = Array.from(files).map(file => {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.readAsDataURL(file);
+        });
+    });
 
-    if (newProduct.images.length === 0) {
-        newProduct.images = [`data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150'><rect fill='%23e6f3ff' width='200' height='150'/><text x='100' y='75' text-anchor='middle' font-family='Arial' font-size='14' fill='%23333'>${newProduct.name}</text></svg>`];
-    }
+    Promise.all(imagePromises).then(images => {
+        const newProduct = {
+            id: Date.now(),
+            name: document.getElementById('productName').value,
+            price: parseFloat(document.getElementById('productPrice').value),
+            description: document.getElementById('productDescription').value,
+            category: document.getElementById('productCategory').value,
+            images: images.length > 0 ? images : [`data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150'><rect fill='%23e6f3ff' width='200' height='150'/><text x='100' y='75' text-anchor='middle' font-family='Arial' font-size='14' fill='%23333'>${document.getElementById('productName').value}</text></svg>`],
+            reviews: []
+        };
 
-    products.push(newProduct);
-    loadProducts();
-    loadAdminProducts();
-    saveData();
-    this.reset();
-    showNotification('Product added successfully');
+        products.push(newProduct);
+        loadProducts();
+        loadAdminProducts();
+        saveData();
+        this.reset();
+        showNotification('Product added successfully');
+    });
 });
 
 // Delete product
@@ -1290,7 +1311,7 @@ function loadReviews() {
                 <div class="stars">${generateStarDisplay(review.rating)}</div>
             </div>
             <p>${review.text}</p>
-            <small style="color: #636e72;">${new Date(review.date).toLocaleDateString()}</small>
+            <small style="color: #4b5e8e;">${new Date(review.date).toLocaleDateString()}</small>
         `;
         reviewsList.appendChild(reviewDiv);
     });
