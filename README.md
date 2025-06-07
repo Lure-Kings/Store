@@ -13,7 +13,7 @@
         .logo { font-size: 2rem; font-weight: bold; color: white; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
         #mainHeaderLogo { max-height: 50px; display: none; }
         #logoText { display: flex; align-items: center; gap: 0.5rem; }
-        .logo i { font-size: 1.8rem; color: #f8d56b; }
+        /* Crown icon style removed as it's no longer in the HTML */
         .nav-buttons { display: flex; gap: 1rem; align-items: center; }
         .btn { padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; }
         .btn-primary { background-color: #1a365d; color: white; }
@@ -59,7 +59,6 @@
             <div class="logo" id="logo">
                 <img id="mainHeaderLogo" alt="Company Logo">
                 <span id="logoText">
-                    <i class="fas fa-crown"></i>
                     Lure Kings
                 </span>
             </div>
@@ -114,11 +113,9 @@
     document.addEventListener('DOMContentLoaded', init);
 
     async function init() {
-        // MODIFIED: Complete rework of data loading logic
         let liveProducts = [];
         try {
-            // Step 1: Always fetch the LIVE data from products.json
-            const response = await fetch('products.json?v=' + Date.now()); // Add cache-busting query
+            const response = await fetch('products.json?v=' + Date.now());
             if (!response.ok) throw new Error('Network response was not ok.');
             liveProducts = await response.json();
         } catch (error) {
@@ -126,20 +123,14 @@
             document.getElementById('productsGrid').innerHTML = '<p>Error loading products. Please try again later.</p>';
         }
 
-        // Step 2: Check for local DRAFTS saved in the admin's browser
         const productDrafts = localStorage.getItem('productDrafts');
         
         if (productDrafts) {
-            // If drafts exist, they are the primary source of truth for THIS session.
             products = JSON.parse(productDrafts);
-            console.log("Loaded product data from local DRAFTS.");
         } else {
-            // Otherwise, use the LIVE data fetched from the server.
             products = liveProducts;
-            console.log("Loaded product data from LIVE products.json.");
         }
 
-        // Load cart and logo from localStorage (this is user-specific and correct)
         const storedCart = localStorage.getItem('cart');
         cart = storedCart ? JSON.parse(storedCart) : [];
 
@@ -148,15 +139,13 @@
             applyLogo(savedLogo);
         }
         
-        // Build the page content
-        createAdminView(); // Must be called before event listeners
+        createAdminView();
         renderProducts();
         updateCartCount();
         renderAdminProducts();
         
         setupEventListeners();
 
-        // Check for order success from FormSubmit
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('order') && urlParams.get('order') === 'success') {
             showToast("Thank you! Your order has been placed successfully.");
@@ -165,10 +154,9 @@
     }
 
     function createAdminView() {
-        const adminViewContainer = document.getElementById('adminView');
-        // Simplified HTML generation for modals
         document.getElementById('cartModal').innerHTML = `<div class="modal-content"><span class="close" onclick="closeCart()">&times;</span><h2 style="margin-bottom: 1rem; color: #1a365d;">Shopping Cart</h2><div id="cartItems"></div><div class="cart-total" id="cartTotalDisplay">Total: $0.00</div><button class="btn btn-primary" onclick="showCheckout()" style="width: 100%; margin-top: 1rem;">Proceed to Checkout</button></div>`;
         
+        const adminViewContainer = document.getElementById('adminView');
         adminViewContainer.innerHTML = `
             <div class="hero"><h1>Admin Dashboard</h1><p>Manage your Lure Kings inventory</p></div>
             <div class="admin-form">
@@ -203,7 +191,8 @@
     }
 
     function setupEventListeners() {
-        document.getElementById('logo').addEventListener('click', handleCrownClick);
+        // MODIFICATION: The event listener is now on the main logo element
+        document.getElementById('logo').addEventListener('click', handleLogoClick);
         if (document.getElementById('productForm')) {
             document.getElementById('productForm').addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -212,15 +201,26 @@
         }
     }
     
-    // MODIFIED: applyLogo no longer hides the logo text
+    // NEW: Replaces handleCrownClick. Triggers admin login.
+    function handleLogoClick() {
+        clickCount++;
+        clearTimeout(clickTimeout);
+        clickTimeout = setTimeout(() => {
+            clickCount = 0;
+        }, 1500); // 1.5 second window to complete the clicks
+
+        if (clickCount >= 5) { // Increased to 5 clicks for security
+            clickCount = 0;
+            showAdminLogin();
+        }
+    }
+    
     function applyLogo(logoUrl) {
         const mainLogoImg = document.getElementById('mainHeaderLogo');
         mainLogoImg.src = logoUrl;
         mainLogoImg.style.display = 'block';
-        // The logo text will now remain visible next to the image.
     }
 
-    // NEW: Function to discard drafts and start fresh from live data
     function discardDrafts() {
         if (confirm("Are you sure? This will delete all your unsaved drafts and reload the page with the current live data from the website.")) {
             localStorage.removeItem('productDrafts');
@@ -241,13 +241,12 @@
         }
     }
     
-    // MODIFIED: saveProduct now correctly saves to localStorage drafts
     function saveProduct() {
         const idInput = document.getElementById('productId').value;
-        const id = idInput ? parseInt(idInput) : null; // Ensure ID is a number or null
+        const id = idInput ? parseInt(idInput) : null;
 
         const newProductData = {
-            id: id || Date.now(), // Use existing ID or create a new one
+            id: id || Date.now(),
             name: document.getElementById('productName').value,
             category: document.getElementById('productCategory').value,
             price: parseFloat(document.getElementById('productPrice').value),
@@ -263,14 +262,11 @@
         const index = products.findIndex(p => p.id === id);
 
         if (index > -1) {
-            // Editing existing product
             products[index] = newProductData;
         } else {
-            // Adding new product
             products.push(newProductData);
         }
         
-        // KEY FIX: Save the entire updated 'products' array to localStorage as a draft
         localStorage.setItem('productDrafts', JSON.stringify(products));
 
         renderProducts();
@@ -281,12 +277,10 @@
         showToast(id ? 'Product draft updated!' : 'Product draft added!');
     }
 
-    // MODIFIED: deleteProduct now correctly saves to localStorage drafts
     function deleteProduct(id) {
         if (!confirm('Are you sure you want to delete this product from your draft?')) return;
         products = products.filter(p => p.id !== id);
         
-        // KEY FIX: Save the updated array to the draft
         localStorage.setItem('productDrafts', JSON.stringify(products));
 
         renderProducts();
@@ -313,7 +307,6 @@
         setTimeout(() => { t.classList.remove('show'); }, 3000);
     }
     
-    // --- UNCHANGED RENDER AND UTILITY FUNCTIONS ---
     function renderProducts() { const grid = document.getElementById('productsGrid'); if (!grid) return; grid.innerHTML = ''; const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter); if (filtered.length === 0) { grid.innerHTML = '<p>No products found in this category.</p>'; return; } filtered.forEach(p => { const card = document.createElement('div'); card.className = 'product-card'; card.innerHTML = `<img src="${p.image}" alt="${p.name}" class="product-image"><div class="product-info"><h3 class="product-title">${p.name}</h3><div class="product-price">$${p.price.toFixed(2)}</div><p class="product-description">${p.description}</p><button class="add-to-cart" onclick="addToCart(${p.id})">Add to Cart</button></div>`; grid.appendChild(card); }); }
     function renderAdminProducts() { const cont = document.getElementById('adminProductsList'); if (!cont) return; cont.innerHTML = ''; if (!products.length) { cont.innerHTML = '<p>No product drafts.</p>'; return; } [...products].slice().reverse().forEach(p => { const el = document.createElement('div'); el.className = 'product-card'; el.innerHTML = `<img src="${p.image}" alt="${p.name}" class="product-image"><div class="product-info"><h3 class="product-title">${p.name}</h3><p style="font-size:0.9em;color:#666">${p.category}</p><p style="font-weight:bold;color:#e74c3c">$${p.price.toFixed(2)}</p><div style="margin-top:1rem; display: flex; gap: 10px;"><button onclick="editProduct(${p.id})" class="btn btn-secondary" style="flex:1;">Edit</button><button onclick="deleteProduct(${p.id})" class="btn btn-danger" style="flex:1;">Delete</button></div></div>`; cont.appendChild(el); }); }
     function saveCartToStorage() { localStorage.setItem('cart', JSON.stringify(cart)); }
