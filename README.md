@@ -44,14 +44,17 @@
         .admin-form { background: white; border: 1px solid #ddd; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; }
         .form-group { margin-bottom: 1rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #1a365d; }
+        .form-group label .required-star { color: #e74c3c; }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; }
         .hidden { display: none !important; }
-        .toast { position: fixed; bottom: 20px; right: 20px; background: #1a365d; color: white; padding: 1rem; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 3000; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #2c3e50; color: white; padding: 1rem; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 3000; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
         .toast.show { opacity: 1; visibility: visible; }
         #exportData { width: 100%; height: 250px; font-family: monospace; margin-top: 1rem; white-space: pre; overflow-wrap: normal; overflow-x: scroll; }
         .admin-note { background-color: #eef2f7; border-left: 4px solid #1a365d; padding: 1rem; margin-bottom: 1rem; border-radius: 4px; }
         .image-preview-container { margin-top: 1rem; }
         .image-preview { max-width: 200px; max-height: 200px; border-radius: 8px; border: 1px solid #ddd; }
+        .summary-line { display: flex; justify-content: space-between; font-size: 1rem; padding: 0.25rem 0; }
+        .cart-total { text-align: right; padding: 1rem 0; font-size: 1.3rem; font-weight: bold; color: #1a365d; border-top: 1px solid #ddd; margin-top: 1rem; }
     </style>
 </head>
 <body>
@@ -96,17 +99,33 @@
     
     <script>
     // #############################################################################
-    // ####################  START OF YOUR PRODUCT DATABASE  #######################
+    // #################### START OF YOUR PRODUCT DATABASE #########################
     // #############################################################################
-    
-    // This is the permanent list of products for your website.
-    // To update it, use the Admin Panel's "Code Generator" and paste the
-    // new code block here, replacing this one.
-    
-    l### START OF YOUR PRODUCT DATABASE ###
-    
-    // #############################################################################
-    // #####################  END OF YOUR PRODUCT DATABASE  ########################
+    //
+    // --> To update your products, DELETE the lines between here and the "END" comment,
+    // --> then PASTE the new code generated from the admin panel.
+    //
+    let products = [
+      {
+        "id": 1,
+        "name": "Bass Pro Jig Head",
+        "category": "jigs",
+        "price": 12.99,
+        "description": "Premium jig head perfect for bass fishing with realistic action.",
+        "image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop"
+      },
+      {
+        "id": 2,
+        "name": "Soft Plastic Worm",
+        "category": "soft-plastics",
+        "price": 8.49,
+        "description": "Lifelike soft plastic worm that attracts fish with its natural movement.",
+        "image": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop"
+      }
+    ];
+    //
+    // --> END OF YOUR PRODUCT DATABASE
+    //
     // #############################################################################
 
 
@@ -117,7 +136,7 @@
     let clickTimeout;
     let cart = [];
     let currentFilter = 'all';
-    let tempProductImage = null; // Holds Base64 image data for the form
+    let tempProductImage = null;
 
     // --- APP INITIALIZATION ---
     document.addEventListener('DOMContentLoaded', init);
@@ -132,11 +151,60 @@
         updateCartCount();
         renderAdminProducts();
         setupEventListeners();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('order') && urlParams.get('order') === 'success') {
+            showToast("Thank you! Your order has been placed successfully.");
+            localStorage.removeItem('cart'); // Clear cart after successful order
+            cart = [];
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
     }
 
     function createModals() {
         document.getElementById('cartModal').innerHTML = `<div class="modal-content"><span class="close" onclick="closeCart()">&times;</span><h2 style="margin-bottom: 1rem; color: #1a365d;">Shopping Cart</h2><div id="cartItems"></div><div class="cart-total" id="cartTotalDisplay">Total: $0.00</div><button class="btn btn-primary" onclick="showCheckout()" style="width: 100%; margin-top: 1rem;">Proceed to Checkout</button></div>`;
-        document.getElementById('checkoutModal').innerHTML = `<div class="modal-content"><span class="close" onclick="closeCheckout()">&times;</span><h2 style="margin-bottom: 1rem; color: #1a365d;">Secure Checkout</h2><p>Checkout functionality is currently under development.</p></div>`;
+        
+        // FIXED: The entire checkout modal HTML is now correctly created here.
+        document.getElementById('checkoutModal').innerHTML = `
+            <div class="modal-content">
+                <span class="close" onclick="closeCheckout()">&times;</span>
+                <h2 style="margin-bottom: 1rem; color: #1a365d;">Secure Checkout</h2>
+                <form id="checkoutForm" method="POST">
+                    <input type="hidden" name="_subject" value="New Order from Lure Kings">
+                    <input type="hidden" name="_cc" value="lure.kings.fishing.aus@gmail.com">
+                    <input type="hidden" name="_autoresponse" value="Thank you for your order! We'll process it shortly.">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" id="form-next-url" name="_next">
+                    
+                    <div class="form-group">
+                        <label for="customerName">Full Name<span class="required-star">*</span></label>
+                        <input type="text" id="customerName" name="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerEmail">Email Address<span class="required-star">*</span></label>
+                        <input type="email" id="customerEmail" name="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerAddress">Delivery Address<span class="required-star">*</span></label>
+                        <textarea id="customerAddress" name="Address" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderNotes">Order Notes (Optional)</label>
+                        <textarea id="orderNotes" name="Notes" rows="2"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Order Summary</label>
+                        <div id="orderItemsDisplay" style="padding: 0.5rem; background: #f5f5f5; border-radius: 4px;"></div>
+                    </div>
+                    <div class="cart-total" id="checkoutTotalDisplay"></div>
+                    
+                    <input type="hidden" id="orderItemsInput" name="Order_Items">
+                    <input type="hidden" id="orderTotalInput" name="Total">
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Place Order</button>
+                </form>
+            </div>`;
     }
 
     function createAdminView() {
@@ -171,14 +239,14 @@
             <div class="admin-form">
                 <h2 style="margin-bottom: 1rem; color: #1a365d;">Current Product List</h2>
                 <div id="adminProductsList"></div>
-            </div>
-        `;
+            </div>`;
     }
 
     function setupEventListeners() {
         document.getElementById('logo').addEventListener('click', handleLogoClick);
         document.getElementById('productForm').addEventListener('submit', handleFormSubmit);
         document.getElementById('productImageFile').addEventListener('change', handleImageFileChange);
+        document.getElementById('checkoutForm').addEventListener('submit', prepareOrderForSubmission);
     }
     
     function handleLogoClick() {
@@ -200,7 +268,7 @@
         }
         const reader = new FileReader();
         reader.onload = function(e) {
-            tempProductImage = e.target.result; // This is the Base64 string
+            tempProductImage = e.target.result;
             const preview = document.getElementById('imagePreview');
             preview.src = tempProductImage;
             preview.style.display = 'block';
@@ -219,7 +287,7 @@
             category: document.getElementById('productCategory').value,
             price: parseFloat(document.getElementById('productPrice').value),
             description: document.getElementById('productDescription').value,
-            image: tempProductImage, // Use the Base64 data from the uploaded file
+            image: tempProductImage,
         };
 
         if (!newProductData.name || !newProductData.category || isNaN(newProductData.price) || !newProductData.image) {
@@ -237,29 +305,25 @@
         
         renderProducts();
         renderAdminProducts();
-        cancelEdit(); // Resets the form
+        cancelEdit();
         showToast(id ? 'Product updated in the list!' : 'Product added to the list!');
     }
 
     function editProduct(id) {
         const product = products.find(p => p.id === id);
         if (!product) return;
-
         document.getElementById('form-title').innerText = 'Edit Product';
         document.getElementById('save-btn').innerText = 'Save Changes to List';
         document.getElementById('cancel-edit-btn').style.display = 'block';
-
         document.getElementById('productId').value = product.id;
         document.getElementById('productName').value = product.name;
         document.getElementById('productCategory').value = product.category;
         document.getElementById('productPrice').value = product.price;
         document.getElementById('productDescription').value = product.description;
-        
         const preview = document.getElementById('imagePreview');
         preview.src = product.image;
         preview.style.display = 'block';
-        tempProductImage = product.image; // IMPORTANT: Pre-fill the image data
-
+        tempProductImage = product.image;
         document.getElementById('productForm').scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -283,25 +347,32 @@
 
     function generateProductCode() {
         const exportTextArea = document.getElementById('exportData');
-        const productCode = `let products = ${JSON.stringify(products, null, 2)};`;
+        // SIMPLIFIED: Only generate the array content, not "let products = ..."
+        const productCode = JSON.stringify(products, null, 2) + ';';
         exportTextArea.value = productCode;
         exportTextArea.select();
         try {
             document.execCommand('copy');
-            showToast('Final code copied to clipboard!');
+            showToast('Final code copied! Now paste it in your index.html.');
         } catch (err) {
             showToast('Could not copy automatically. Please copy manually.');
         }
     }
-
-    function showToast(message) {
-        const t = document.getElementById('toast');
-        t.textContent = message;
-        t.classList.add('show');
-        setTimeout(() => { t.classList.remove('show'); }, 3000);
-    }
     
+    function prepareOrderForSubmission(e) {
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const orderSummary = cart.map(item => `${item.name} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`).join('\n');
+        
+        document.getElementById('orderItemsInput').value = orderSummary;
+        document.getElementById('orderTotalInput').value = `$${total.toFixed(2)}`;
+        
+        const form = document.getElementById('checkoutForm');
+        form.action = "https://formsubmit.co/lure.kings.fishing.aus@gmail.com";
+        document.getElementById('form-next-url').value = `${window.location.origin}${window.location.pathname}?order=success`;
+    }
+
     // --- RENDER AND UTILITY FUNCTIONS ---
+    function showToast(message) { const t = document.getElementById('toast'); t.textContent = message; t.classList.add('show'); setTimeout(() => { t.classList.remove('show'); }, 3000); }
     function renderProducts() { const grid = document.getElementById('productsGrid'); if (!grid) return; grid.innerHTML = ''; const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter); if (filtered.length === 0) { grid.innerHTML = '<p>No products found in this category.</p>'; return; } filtered.forEach(p => { const card = document.createElement('div'); card.className = 'product-card'; card.innerHTML = `<img src="${p.image}" alt="${p.name}" class="product-image"><div class="product-info"><h3 class="product-title">${p.name}</h3><div class="product-price">$${p.price.toFixed(2)}</div><p class="product-description">${p.description}</p><button class="add-to-cart" onclick="addToCart(${p.id})">Add to Cart</button></div>`; grid.appendChild(card); }); }
     function renderAdminProducts() { const cont = document.getElementById('adminProductsList'); if (!cont) return; cont.innerHTML = ''; if (!products.length) { cont.innerHTML = '<p>No products in the list.</p>'; return; } [...products].slice().reverse().forEach(p => { const el = document.createElement('div'); el.className = 'product-card'; el.innerHTML = `<img src="${p.image}" alt="${p.name}" class="product-image"><div class="product-info"><h3 class="product-title">${p.name}</h3><div style="margin-top:1rem; display: flex; gap: 10px;"><button onclick="editProduct(${p.id})" class="btn btn-secondary" style="flex:1;">Edit</button><button onclick="deleteProduct(${p.id})" class="btn btn-danger" style="flex:1;">Remove</button></div></div>`; cont.appendChild(el); }); }
     function showView(view) { if (view === 'admin' && !isAdminLoggedIn) { showAdminLogin(); return; } document.getElementById('storeView').classList.toggle('hidden', view !== 'store'); document.getElementById('adminView').classList.toggle('hidden', view !== 'admin'); }
@@ -310,11 +381,11 @@
     function updateCartCount() { document.getElementById('cartCount').textContent = cart.reduce((t, i) => t + i.quantity, 0); }
     function showCart() { updateCartDisplay(); document.getElementById('cartModal').style.display = 'block'; }
     function closeCart() { document.getElementById('cartModal').style.display = 'none'; }
-    function showCheckout() { updateCheckoutDisplay(); document.getElementById('checkoutModal').style.display = 'block'; closeCart();}
-    function closeCheckout() { document.getElementById('checkoutModal').style.display = 'none'; }
     function showAdminLogin() { const pw = prompt("Enter admin password:"); if (pw === ADMIN_PASSWORD) { isAdminLoggedIn = true; showView('admin'); } else if (pw !== null) { alert('Incorrect password!'); } }
     function updateCartDisplay() { const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0); const cartItemsEl = document.getElementById('cartItems'); if (cartItemsEl) { cartItemsEl.innerHTML = cart.length ? cart.map(item => `<div class="cart-item" style="display:flex; align-items:center; gap:1rem; padding:1rem; border-bottom:1px solid #ddd;"><img src="${item.image}" style="width:60px; height:60px; object-fit:cover;"><div style="flex-grow:1;"><div style="font-weight:bold;">${item.name}</div><div>$${item.price.toFixed(2)}</div></div><div>x ${item.quantity}</div></div>`).join('') : '<p>Your cart is empty.</p>'; document.getElementById('cartTotalDisplay').textContent = `Total: $${total.toFixed(2)}`; }}
-    function updateCheckoutDisplay() { /* Future implementation */ }
+    function showCheckout() { if(cart.length === 0) { alert("Your cart is empty!"); return; } updateCheckoutDisplay(); document.getElementById('checkoutModal').style.display = 'block'; closeCart(); }
+    function closeCheckout() { document.getElementById('checkoutModal').style.display = 'none'; }
+    function updateCheckoutDisplay() { const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0); document.getElementById('orderItemsDisplay').innerHTML = cart.map(item => `<div class="summary-line"><span>${item.name} (x${item.quantity})</span><span>$${(item.price * item.quantity).toFixed(2)}</span></div>`).join(''); document.getElementById('checkoutTotalDisplay').textContent = `Total: $${total.toFixed(2)}`; }
     
     </script>
 </body>
