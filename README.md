@@ -1,1352 +1,1199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lure Kings - Premium Fishing Store</title>
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Georgia', serif;
-    background-color: #e6f0fa;
-    color: #1e3a8a;
-    line-height: 1.6;
-}
-
-.header {
-    background: linear-gradient(135deg, #1e3a8a 0%, #60a5fa 100%);
-    color: white;
-    padding: 1.5rem 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.header-content {
-    max-width: 1280px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 1.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.logo svg {
-    width: 30px;
-    height: 30px;
-    fill: #93c5fd;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.logo svg:hover {
-    transform: scale(1.1);
-}
-
-.cart-icon {
-    position: relative;
-    cursor: pointer;
-    font-size: 1.2rem;
-}
-
-.cart-count {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background: #1e40af;
-    color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    font-size: 0.7rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.hero {
-    background: linear-gradient(rgba(30, 58, 138, 0.8), rgba(96, 165, 250, 0.8)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%231e3a8a" width="1200" height="600"/><path fill="%23ffffff" opacity="0.1" d="M0,300 Q300,200 600,300 T1200,300 V600 H0 Z"/></svg>');
-    color: white;
-    padding: 5rem 2rem;
-    text-align: center;
-}
-
-.hero h1 {
-    font-size: 3.5rem;
-    margin-bottom: 1.5rem;
-    font-weight: 700;
-}
-
-.hero p {
-    font-size: 1.3rem;
-    margin-bottom: 2rem;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.filters {
-    max-width: 1280px;
-    margin: 2rem auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-}
-
-.filter-btn {
-    background: #bfdbfe;
-    color: #1e3a8a;
-    border: none;
-    padding: 0.5rem 1.5rem;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background 0.3s, color 0.3s;
-}
-
-.filter-btn.active, .filter-btn:hover {
-    background: #1e3a8a;
-    color: white;
-}
-
-.main-content {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-.product-grid {
-    display: flex;
-    overflow-x: auto;
-    gap: 2rem;
-    margin-top: 2rem;
-    padding-bottom: 1rem;
-    scroll-behavior: smooth;
-}
-
-.product-grid::-webkit-scrollbar {
-    height: 8px;
-}
-
-.product-grid::-webkit-scrollbar-thumb {
-    background: #60a5fa;
-    border-radius: 4px;
-}
-
-.product-grid::-webkit-scrollbar-track {
-    background: #bfdbfe;
-}
-
-.product-card {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    flex: 0 0 300px;
-}
-
-.product-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-}
-
-.product-images {
-    position: relative;
-    height: 220px;
-    overflow: hidden;
-}
-
-.product-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
-}
-
-.product-image.active {
-    display: block;
-}
-
-.image-nav {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 6px;
-}
-
-.image-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.6);
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.image-dot.active {
-    background: white;
-}
-
-.product-info {
-    padding: 1.5rem;
-}
-
-.product-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: #1e3a8a;
-}
-
-.product-price {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #2563eb;
-    margin-bottom: 1rem;
-}
-
-.rating {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.stars {
-    display: flex;
-    gap: 3px;
-}
-
-.star {
-    color: #93c5fd;
-}
-
-.rating-text {
-    font-size: 0.9rem;
-    color: #4b5e8e;
-}
-
-.add-to-cart-btn {
-    width: 100%;
-    background: #1e3a8a;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background 0.3s;
-}
-
-.add-to-cart-btn:hover {
-    background: #60a5fa;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
-    z-index: 2000;
-}
-
-.modal-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    max-width: 90%;
-    max-height: 90%;
-    overflow-y: auto;
-}
-
-.admin-panel {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: #1e3a8a;
-}
-
-.form-group input, .form-group textarea, .form-group select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #bfdbfe;
-    border-radius: 6px;
-    font-size: 1rem;
-}
-
-.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-    outline: none;
-    border-color: #1e3a8a;
-}
-
-.btn {
-    background: #1e3a8a;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background 0.3s;
-    margin-right: 12px;
-}
-
-.btn:hover {
-    background: #60a5fa;
-}
-
-.btn-danger {
-    background: #1e40af;
-}
-
-.btn-danger:hover {
-    background: #3b82f6;
-}
-
-.notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: #2563eb;
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transform: translateX(400px);
-    transition: transform 0.3s ease;
-    z-index: 3000;
-}
-
-.notification.show {
-    transform: translateX(0);
-}
-
-.cart-sidebar {
-    position: fixed;
-    top: 0;
-    right: -400px;
-    width: 400px;
-    height: 100%;
-    background: white;
-    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-    transition: right 0.3s ease;
-    z-index: 2000;
-    overflow-y: auto;
-}
-
-.cart-sidebar.open {
-    right: 0;
-}
-
-.cart-header {
-    background: #1e3a8a;
-    color: white;
-    padding: 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.cart-items {
-    padding: 1.5rem;
-}
-
-.cart-item {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid #bfdbfe;
-}
-
-.cart-item img {
-    width: 70px;
-    height: 70px;
-    object-fit: cover;
-    border-radius: 6px;
-}
-
-.cart-item-info {
-    flex: 1;
-}
-
-.shipping-calculator {
-    background: #e6f0fa;
-    padding: 1.5rem;
-    border-radius: 6px;
-    margin: 1rem 0;
-}
-
-.checkout-section {
-    padding: 1.5rem;
-    border-top: 2px solid #bfdbfe;
-}
-
-.reviews-section {
-    margin-top: 2rem;
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-.review-item {
-    padding: 1rem 0;
-    border-bottom: 1px solid #bfdbfe;
-}
-
-.review-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
-
-.hidden {
-    display: none;
-}
-
-@media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    .hero h1 {
-        font-size: 2.5rem;
-    }
-
-    .product-grid {
-        flex-direction: row;
-    }
-
-    .cart-sidebar {
-        width: 100%;
-        right: -100%;
-    }
-
-    .filters {
-        flex-direction: column;
-        align-items: center;
-    }
-}
-</style>
-</head>
-<body>
-<!-- Header -->
-<header class="header">
-    <div class="header-content">
-        <div class="logo">
-            <svg onclick="handleLogoClick()" viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm5-9h-3V7h-2v4H7v2h5v4h2v-4h3z"/>
-            </svg>
-            <span>Lure Kings</span>
-        </div>
-        <div class="cart-icon" onclick="toggleCart()">
-            🛒
-            <span class="cart-count" id="cartCount">0</span>
-        </div>
-    </div>
-</header>
-
-<!-- Hero Section -->
-<section class="hero" id="home">
-    <h1>Premium Fishing Equipment</h1>
-    <p>Elevate your fishing experience with our curated selection of high-quality lures, rods, and tackle</p>
-</section>
-
-<!-- Filters -->
-<div class="filters">
-    <button class="filter-btn active" onclick="filterProducts('all')">All</button>
-    <button class="filter-btn" onclick="filterProducts('jigs')">Jigs</button>
-    <button class="filter-btn" onclick="filterProducts('soft-plastics')">Soft Plastics</button>
-    <button class="filter-btn" onclick="filterProducts('topwaters')">Topwaters</button>
-    <button class="filter-btn" onclick="filterProducts('spinnerbaits')">Spinnerbaits</button>
-    <button class="filter-btn" onclick="filterProducts('vibrating-jigs')">Vibrating/Bladed Jigs</button>
-    <button class="filter-btn" onclick="filterProducts('crankbaits')">Crankbaits</button>
-    <button class="filter-btn" onclick="filterProducts('jerkbaits')">Jerkbaits</button>
-    <button class="filter-btn" onclick="filterProducts('swimbaits')">Swimbaits</button>
-    <button class="filter-btn" onclick="filterProducts('flies')">Flies</button>
-    <button class="filter-btn" onclick="filterProducts('line')">Line</button>
-    <button class="filter-btn" onclick="filterProducts('rods')">Rods</button>
-    <button class="filter-btn" onclick="filterProducts('reels')">Reels</button>
-</div>
-
-<!-- Main Content -->
-<main class="main-content">
-    <div id="customer-view">
-        <div class="product-grid" id="productGrid"></div>
-
-        <!-- Reviews Section -->
-        <div class="reviews-section" id="reviewsSection">
-            <h3>Customer Reviews</h3>
-            <div class="rating">
-                <div class="stars" id="overallRating"></div>
-                <span class="rating-text" id="overallRatingText"></span>
-            </div>
-            <div id="reviewsList"></div>
-
-            <h4 style="margin-top: 2rem;">Leave a Review</h4>
-            <form id="reviewForm">
-                <div class="form-group">
-                    <label>Your Name</label>
-                    <input type="text" id="reviewerName" required>
-                </div>
-                <div class="form-group">
-                    <label>Rating</label>
-                    <select id="reviewRating" required>
-                        <option value="">Select Rating</option>
-                        <option value="5">5 Stars</option>
-                        <option value="4">4 Stars</option>
-                        <option value="3">3 Stars</option>
-                        <option value="2">2 Stars</option>
-                        <option value="1">1 Star</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Review</label>
-                    <textarea id="reviewText" rows="4" required></textarea>
-                </div>
-                <button type="submit" class="btn">Submit Review</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Admin Panel -->
-    <div id="admin-panel" class="admin-panel hidden">
-        <h2>Admin Panel - Lure Kings</h2>
-        <div style="margin-bottom: 2rem;">
-            <button class="btn" onclick="showSection('product-management')">Product Management</button>
-            <button class="btn" onclick="showSection('order-management')">Order Management</button>
-            <button class="btn" onclick="showSection('review-management')">Review Management</button>
-            <button class="btn" onclick="showCustomerView()">Back to Store</button>
-        </div>
-
-        <!-- Product Management -->
-        <div id="product-management" class="admin-section">
-            <h3>Add New Product</h3>
-            <form id="productForm">
-                <div class="form-group">
-                    <label>Product Name</label>
-                    <input type="text" id="productName" required>
-                </div>
-                <div class="form-group">
-                    <label>Price (AUD)</label>
-                    <input type="number" id="productPrice" step="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="productDescription" rows="3" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Category</label>
-                    <select id="productCategory" required>
-                        <option value="">Select Category</option>
-                        <option value="jigs">Jigs</option>
-                        <option value="soft-plastics">Soft Plastics</option>
-                        <option value="topwaters">Topwaters</option>
-                        <option value="spinnerbaits">Spinnerbaits</option>
-                        <option value="vibrating-jigs">Vibrating/Bladed Jigs</option>
-                        <option value="crankbaits">Crankbaits</option>
-                        <option value="jerkbaits">Jerkbaits</option>
-                        <option value="swimbaits">Swimbaits</option>
-                        <option value="flies">Flies</option>
-                        <option value="line">Line</option>
-                        <option value="rods">Rods</option>
-                        <option value="reels">Reels</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Product Images</label>
-                    <input type="file" id="productImageFiles" accept="image/*" multiple>
-                </div>
-                <button type="submit" class="btn">Add Product</button>
-            </form>
-
-            <h3 style="margin-top: 2rem;">Existing Products</h3>
-            <div id="adminProductList"></div>
-        </div>
-
-        <!-- Order Management -->
-        <div id="order-management" class="admin-section hidden">
-            <h3>Recent Orders</h3>
-            <div id="ordersList"></div>
-        </div>
-
-        <!-- Review Management -->
-        <div id="review-management" class="admin-section hidden">
-            <h3>Manage Reviews</h3>
-            <div id="adminReviewsList"></div>
-        </div>
-    </div>
-</main>
-
-<!-- Cart Sidebar -->
-<div class="cart-sidebar" id="cartSidebar">
-    <div class="cart-header">
-        <h3>Shopping Cart</h3>
-        <button onclick="toggleCart()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">×</button>
-    </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="shipping-calculator">
-        <h4>Shipping Calculator</h4>
-        <select id="shippingZone" onchange="calculateShipping()">
-            <option value="">Select your location</option>
-            <option value="inner">Inner City - $5.00</option>
-            <option value="metro">Metro Area - $10.00</option>
-            <option value="regional">Regional - $15.00</option>
-            <option value="interstate">Interstate - $15.00</option>
-        </select>
-        <div id="shippingCost" style="margin-top: 10px; font-weight: bold;"></div>
-    </div>
-    <div class="checkout-section">
-        <div id="cartTotal" style="font-size: 1.2rem; font-weight: bold; margin-bottom: 1rem;"></div>
-        <button class="btn" onclick="proceedToCheckout()" style="width: 100%;">Proceed to Checkout</button>
-    </div>
-</div>
-
-<!-- Checkout Modal -->
-<div class="modal" id="checkoutModal">
-    <div class="modal-content">
-        <h2>Checkout</h2>
-        <form id="checkoutForm">
-            <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" id="customerName" required>
-            </div>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="customerEmail" required>
-            </div>
-            <div class="form-group">
-                <label>Phone</label>
-                <input type="tel" id="customerPhone" required>
-            </div>
-            <div class="form-group">
-                <label>Shipping Address</label>
-                <textarea id="shippingAddress" rows="3" required></textarea>
-            </div>
-            <div class="form-group">
-                <label>Payment Method</label>
-                <select id="paymentMethod" required>
-                    <option value="">Select Payment Method</option>
-                    <option value="stripe">Credit Card (Stripe)</option>
-                    <option value="paypal">PayPal</option>
-                    <option value="bank">Bank Transfer</option>
-                </select>
-            </div>
-            <div id="orderSummary" style="background: #e6f0fa; padding: 1rem; border-radius: 6px; margin: 1rem 0;"></div>
-            <div style="display: flex; gap: 1rem;">
-                <button type="submit" class="btn">Complete Order</button>
-                <button type="button" class="btn" onclick="closeCheckout()">Cancel</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Admin Password Modal -->
-<div class="modal" id="adminPasswordModal">
-    <div class="modal-content">
-        <h2>Admin Access</h2>
-        <form id="adminPasswordForm">
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="adminPassword" required>
-            </div>
-            <div style="display: flex; gap: 1rem;">
-                <button type="submit" class="btn">Submit</button>
-                <button type="button" class="btn" onclick="closeAdminPasswordModal()">Cancel</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Notification -->
-<div class="notification" id="notification"></div>
-
-<script>
-// Global variables
-let products = JSON.parse(localStorage.getItem('products')) || [
-    {
-        id: 1,
-        name: "Premium Spinnerbait Lure Set",
-        price: 29.99,
-        description: "High-quality spinnerbait lures perfect for bass fishing. Includes 6 different colors.",
-        category: "spinnerbaits",
-        images: ["data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150'><rect fill='%23e6f3ff' width='200' height='150'/><circle fill='%23ff6b35' cx='100' cy='75' r='30'/><text x='100' y='130' text-anchor='middle' font-family='Arial' font-size='12' fill='%23333'>Spinnerbait Lure</text></svg>", "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150'><rect fill='%23fff0e6' width='200' height='150'/><circle fill='%23ff6b35' cx='100' cy='75' r='25'/><text x='100' y='130' text-anchor='middle' font-family='Arial' font-size='12' fill='%23333'>Side View</text></svg>"],
-        reviews: []
-    },
-    {
-        id: 2,
-        name: "Carbon Fiber Fishing Rod",
-        price: 159.99,
-        description: "Ultra-lightweight carbon fiber rod with excellent sensitivity. Perfect for all fishing conditions.",
-        category: "rods",
-        images: ["data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150'><rect fill='%23e6f3ff' width='200' height='150'/><line x1='20' y1='130' x2='180' y2='20' stroke='%23333' stroke-width='8'/><text x='100' y='140' text-anchor='middle' font-family='Arial' font-size='12' fill='%23333'>Carbon Fiber Rod</text></svg>"],
-        reviews: []
-    },
-    {
-        id: 3,
-        name: "Professional Spinning Reel",
-        price: 89.99,
-        description: "Smooth-action spinning reel with 10 ball bearings. Built for durability and performance.",
-        category: "reels",
-        images: ["data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150'><rect fill='%23e6f3ff' width='200' height='150'/><circle fill='%23666' cx='100' cy='75' r='40' stroke='%23333' stroke-width='3' fill='none'/><circle fill='%23333' cx='100' cy='75' r='20'/><text x='100' y='140' text-anchor='middle' font-family='Arial' font-size='12' fill='%23333'>Spinning Reel</text></svg>"],
-        reviews: []
-    },
-    {
-        id: 4,
-        name: "Pro Crankbait Set",
-        price: 34.99,
-        description: "Set of 5 deep-diving crankbaits designed for targeting large freshwater fish.",
-        category: "crankbaits",
-        images: ["data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150'><rect fill='%23e6f3ff' width='200' height='150'/><rect fill='%23ff6b35' x='50' y='50' width='100' height='30' rx='15'/><text x='100' y='130' text-anchor='middle' font-family='Arial' font-size='12' fill='%23333'>Crankbait Set</text></svg>"],
-        reviews: []
-    }
-];
-
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-let orders = JSON.parse(localStorage.getItem('orders')) || [];
-let websiteReviews = JSON.parse(localStorage.getItem('websiteReviews')) || [];
-let isAdminMode = false;
-const ADMIN_PASSWORD = 'maxchingerhambo';
-let logoClickCount = 0;
-let currentFilter = 'all';
-
-// Initialize the application
-function init() {
-    loadProducts();
-    updateCartDisplay();
-    loadReviews();
-    calculateOverallRating();
-    saveData();
-}
-
-// Save data to localStorage
-function saveData() {
-    localStorage.setItem('products', JSON.stringify(products));
-    localStorage.setItem('cart', JSON.stringify(cart));
-    localStorage.setItem('orders', JSON.stringify(orders));
-    localStorage.setItem('websiteReviews', JSON.stringify(websiteReviews));
-}
-
-// Handle logo clicks for admin access
-function handleLogoClick() {
-    logoClickCount++;
-    if (logoClickCount >= 3) {
-        promptAdminPassword();
-        logoClickCount = 0;
-    }
-}
-
-// Prompt for admin password
-function promptAdminPassword() {
-    const modal = document.getElementById('adminPasswordModal');
-    modal.style.display = 'block';
-}
-
-// Handle admin password submission
-document.getElementById('adminPasswordForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const password = document.getElementById('adminPassword').value;
-    if (password === ADMIN_PASSWORD) {
-        toggleAdminMode();
-        closeAdminPasswordModal();
-    } else {
-        showNotification('Incorrect password');
-        document.getElementById('adminPassword').value = '';
-    }
-});
-
-// Close admin password modal
-function closeAdminPasswordModal() {
-    document.getElementById('adminPasswordModal').style.display = 'none';
-    logoClickCount = 0;
-}
-
-// Toggle admin mode
-function toggleAdminMode() {
-    isAdminMode = !isAdminMode;
-    const customerView = document.getElementById('customer-view');
-    const adminPanel = document.getElementById('admin-panel');
-
-    if (isAdminMode) {
-        customerView.classList.add('hidden');
-        adminPanel.classList.remove('hidden');
-        loadAdminData();
-        showNotification('Admin mode activated');
-    } else {
-        customerView.classList.remove('hidden');
-        adminPanel.classList.add('hidden');
-        showNotification('Returned to customer view');
-    }
-}
-
-// Show customer view
-function showCustomerView() {
-    isAdminMode = false;
-    const customerView = document.getElementById('customer-view');
-    const adminPanel = document.getElementById('admin-panel');
-    customerView.classList.remove('hidden');
-    adminPanel.classList.add('hidden');
-}
-
-// Show admin section
-function showSection(sectionId) {
-    const sections = document.querySelectorAll('.admin-section');
-    sections.forEach(section => section.classList.add('hidden'));
-    document.getElementById(sectionId).classList.remove('hidden');
-}
-
-// Filter products
-function filterProducts(category) {
-    currentFilter = category;
-    const buttons = document.querySelectorAll('.filter-btn');
-    buttons.forEach(btn => btn.classList.remove('active'));
-    const activeBtn = Array.from(buttons).find(btn => btn.onclick.toString().includes(`'${category}'`));
-    if (activeBtn) activeBtn.classList.add('active');
-    loadProducts();
-}
-
-// Load products into the grid
-function loadProducts() {
-    const grid = document.getElementById('productGrid');
-    grid.innerHTML = '';
-
-    const filteredProducts = currentFilter === 'all' 
-        ? products 
-        : products.filter(product => product.category === currentFilter);
-
-    filteredProducts.forEach(product => {
-        const productCard = createProductCard(product);
-        grid.appendChild(productCard);
-    });
-}
-
-// Create product card HTML
-function createProductCard(product) {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-
-    const avgRating = calculateProductRating(product);
-    const starDisplay = generateStarDisplay(avgRating);
-
-    card.innerHTML = `
-        <div class="product-images">
-            ${product.images.map((img, index) =>
-                `<img src="${img}" alt="${product.name}" class="product-image ${index === 0 ? 'active' : ''}">`
-            ).join('')}
-            ${product.images.length > 1 ? `
-                <div class="image-nav">
-                    ${product.images.map((_, index) =>
-                        `<div class="image-dot ${index === 0 ? 'active' : ''}" onclick="switchImage(${product.id}, ${index})"></div>`
-                    ).join('')}
-                </div>
-            ` : ''}
-        </div>
-        <div class="product-info">
-            <h3 class="product-title">${product.name}</h3>
-            <div class="product-price">$${product.price}</div>
-            <div class="rating">
-                <div class="stars">${starDisplay}</div>
-                <span class="rating-text">(${product.reviews.length} reviews)</span>
-            </div>
-            <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
-        </div>
-    `;
-
-    return card;
-}
-
-// Switch product image
-function switchImage(productId, imageIndex) {
-    const card = document.querySelector(`[data-product-id="${productId}"]`) ||
-        Array.from(document.querySelectorAll('.product-card')).find(card =>
-            card.querySelector('.product-title').textContent === products.find(p => p.id === productId)?.name
-        );
-
-    if (card) {
-        const images = card.querySelectorAll('.product-image');
-        const dots = card.querySelectorAll('.image-dot');
-
-        images.forEach((img, index) => {
-            img.classList.toggle('active', index === imageIndex);
-        });
-
-        dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === imageIndex);
-        });
-    }
-}
-
-// Generate star display
-function generateStarDisplay(rating) {
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
-    let stars = '';
-
-    for (let i = 0; i < fullStars; i++) {
-        stars += '<span class="star">★</span>';
-    }
-
-    if (hasHalfStar) {
-        stars += '<span class="star">☆</span>';
-    }
-
-    const remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-    for (let i = 0; i < remainingStars; i++) {
-        stars += '<span class="star" style="color: #bfdbfe;">★</span>';
-    }
-
-    return stars;
-}
-
-// Calculate product rating
-function calculateProductRating(product) {
-    if (product.reviews.length === 0) return 0;
-    const sum = product.reviews.reduce((acc, review) => acc + review.rating, 0);
-    return sum / product.reviews.length;
-}
-
-// Add to cart
-function addToCart(productId) {
-    const product = products.find(p => p.id === productId);
-    if (product) {
-        const existingItem = cart.find(item => item.id === productId);
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            cart.push({ ...product, quantity: 1 });
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lure Kings - Premium Fishing Lures</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        updateCartDisplay();
-        saveData();
-        showNotification(`${product.name} added to cart`);
-    }
-}
 
-// Update cart display
-function updateCartDisplay() {
-    const cartCount = document.getElementById('cartCount');
-    const cartItems = document.getElementById('cartItems');
-    const cartTotal = document.getElementById('cartTotal');
-
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartCount.textContent = totalItems;
-
-    cartItems.innerHTML = '';
-    let subtotal = 0;
-
-    cart.forEach(item => {
-        subtotal += item.price * item.quantity;
-        const cartItem = document.createElement('div');
-        cartItem.className = 'cart-item';
-        cartItem.innerHTML = `
-            <img src="${item.images[0]}" alt="${item.name}">
-            <div class="cart-item-info">
-                <div style="font-weight: bold;">${item.name}</div>
-                <div>$${item.price} x ${item.quantity}</div>
-                <div style="margin-top: 5px;">
-                    <button onclick="updateCartQuantity(${item.id}, -1)" style="background: #1e40af; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">-</button>
-                    <span style="margin: 0 10px;">${item.quantity}</span>
-                    <button onclick="updateCartQuantity(${item.id}, 1)" style="background: #2563eb; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">+</button>
-                </div>
-            </div>
-        `;
-        cartItems.appendChild(cartItem);
-    });
-
-    cartTotal.textContent = `Subtotal: ${subtotal.toFixed(2)}`;
-}
-
-// Update cart quantity
-function updateCartQuantity(productId, change) {
-    const item = cart.find(item => item.id === productId);
-    if (item) {
-        item.quantity += change;
-        if (item.quantity <= 0) {
-            cart = cart.filter(cartItem => cartItem.id !== productId);
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
         }
-        updateCartDisplay();
-        saveData();
-    }
-}
 
-// Toggle cart sidebar
-function toggleCart() {
-    const cartSidebar = document.getElementById('cartSidebar');
-    cartSidebar.classList.toggle('open');
-}
+        .header {
+            background-color: #1a365d;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-// Calculate shipping
-function calculateShipping() {
-    const shippingZone = document.getElementById('shippingZone').value;
-    const shippingCost = document.getElementById('shippingCost');
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    const rates = {
-        inner: 5.00,
-        metro: 10.00,
-        regional: 15.00,
-        interstate: 15.00
-    };
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
 
-    if (shippingZone && rates[shippingZone]) {
-        shippingCost.textContent = `Shipping: ${rates[shippingZone].toFixed(2)}`;
-        shippingCost.setAttribute('data-cost', rates[shippingZone]);
-    } else {
-        shippingCost.textContent = '';
-        shippingCost.removeAttribute('data-cost');
-    }
-}
+        /* Styling for the new main header logo image */
+        #mainHeaderLogo {
+            max-height: 50px; /* Controls the height of the logo in the header */
+            width: auto;
+            display: none; /* Hidden by default, shown via JS if a logo exists */
+        }
 
-// Proceed to checkout
-function proceedToCheckout() {
-    if (cart.length === 0) {
-        showNotification('Your cart is empty');
-        return;
-    }
+        .logo i {
+            font-size: 1.8rem;
+            color: #f8d56b;
+        }
 
-    const modal = document.getElementById('checkoutModal');
-    const orderSummary = document.getElementById('orderSummary');
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
 
-    let subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    let shipping = parseFloat(document.getElementById('shippingCost').getAttribute('data-cost') || 0);
-    let total = subtotal + shipping;
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
 
-    orderSummary.innerHTML = `
-        <h4>Order Summary</h4>
-        ${cart.map(item => `
-            <div style="display: flex; justify-content: space-between; margin: 5px 0;">
-                <span>${item.name} x${item.quantity}</span>
-                <span>${(item.price * item.quantity).toFixed(2)}</span>
-            </div>
-        `).join('')}
-        <div style="display: flex; justify-content: space-between; margin: 10px 0; padding-top: 10px; border-top: 1px solid #ccc;">
-            <span>Subtotal:</span>
-            <span>${subtotal.toFixed(2)}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin: 5px 0;">
-            <span>Shipping:</span>
-            <span>${shipping.toFixed(2)}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin: 10px 0; padding-top: 10px; border-top: 1px solid #ccc; font-weight: bold; font-size: 1.1rem;">
-            <span>Total:</span>
-            <span>${total.toFixed(2)}</span>
-        </div>
-    `;
+        .btn-primary {
+            background-color: #1a365d;
+            color: white;
+        }
 
-    modal.style.display = 'block';
-}
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+        }
 
-// Close checkout
-function closeCheckout() {
-    document.getElementById('checkoutModal').style.display = 'none';
-}
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
 
-// Handle checkout form submission
-document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+        .cart-icon {
+            position: relative;
+        }
 
-    const formData = {
-        customerName: document.getElementById('customerName').value,
-        customerEmail: document.getElementById('customerEmail').value,
-        customerPhone: document.getElementById('customerPhone').value,
-        shippingAddress: document.getElementById('shippingAddress').value,
-        paymentMethod: document.getElementById('paymentMethod').value,
-        items: cart,
-        subtotal: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-        shipping: parseFloat(document.getElementById('shippingCost').getAttribute('data-cost') || 0),
-        total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + parseFloat(document.getElementById('shippingCost').getAttribute('data-cost') || 0),
-        orderDate: new Date().toISOString(),
-        orderId: 'LK' + Date.now()
-    };
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
 
-    processOrder(formData);
-});
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
 
-// Process order
-function processOrder(orderData) {
-    orders.push(orderData);
-    sendOrderConfirmation(orderData);
-    cart = [];
-    updateCartDisplay();
-    saveData();
-    closeCheckout();
-    showNotification(`Order ${orderData.orderId} placed successfully! Confirmation sent to ${orderData.customerEmail}`);
-    document.getElementById('cartSidebar').classList.remove('open');
-}
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-// Simulate sending order confirmation
-function sendOrderConfirmation(orderData) {
-    console.log('Order confirmation sent to:', orderData.customerEmail);
-    console.log('Order notification sent to: lure.kings.fishing.aus@gmail.com');
-    console.log('Order details:', orderData);
-}
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1a365d;
+        }
 
-// Show notification
-function showNotification(message) {
-    const notification = document.getElementById('notification');
-    notification.textContent = message;
-    notification.classList.add('show');
-    setTimeout(() => {
-        notification.classList.remove('show');
-    }, 3000);
-}
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: #666;
+        }
 
-// Admin Functions
-function loadAdminData() {
-    loadAdminProducts();
-    loadAdminOrders();
-    loadAdminReviews();
-}
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
 
-// Load admin products
-function loadAdminProducts() {
-    const adminProductList = document.getElementById('adminProductList');
-    adminProductList.innerHTML = '';
+        .category-btn {
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-    products.forEach(product => {
-        const productDiv = document.createElement('div');
-        productDiv.style.cssText = 'border: 1px solid #bfdbfe; padding: 1rem; margin: 1rem 0; border-radius: 6px;';
-        productDiv.innerHTML = `
-            <h4>${product.name}</h4>
-            <p>Price: ${product.price}</p>
-            <p>Category: ${product.category}</p>
-            <p>Reviews: ${product.reviews.length}</p>
-            <button class="btn btn-danger" onclick="deleteProduct(${product.id})">Delete Product</button>
-        `;
-        adminProductList.appendChild(productDiv);
-    });
-}
+        .category-btn:hover, .category-btn.active {
+            background: #1a365d;
+            border-color: #1a365d;
+            color: white;
+        }
 
-// Load admin orders
-function loadAdminOrders() {
-    const ordersList = document.getElementById('ordersList');
-    ordersList.innerHTML = '';
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
 
-    if (orders.length === 0) {
-        ordersList.innerHTML = '<p>No orders yet.</p>';
-        return;
-    }
+        .product-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
 
-    orders.forEach(order => {
-        const orderDiv = document.createElement('div');
-        orderDiv.style.cssText = 'border: 1px solid #bfdbfe; padding: 1rem; margin: 1rem 0; border-radius: 6px;';
-        orderDiv.innerHTML = `
-            <h4>Order ${order.orderId}</h4>
-            <p><strong>Customer:</strong> ${order.customerName} (${order.customerEmail})</p>
-            <p><strong>Date:</strong> ${new Date(order.orderDate).toLocaleDateString()}</p>
-            <p><strong>Total:</strong> ${order.total.toFixed(2)}</p>
-            <p><strong>Payment:</strong> ${order.paymentMethod}</p>
-            <p><strong>Items:</strong></p>
-            <ul>
-                ${order.items.map(item => `<li>${item.name} x${item.quantity} - ${(item.price * item.quantity).toFixed(2)}</li>`).join('')}
-            </ul>
-            <p><strong>Shipping Address:</strong> ${order.shippingAddress}</p>
-        `;
-        ordersList.appendChild(orderDiv);
-    });
-}
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #ddd;
+        }
 
-// Load admin reviews
-function loadAdminReviews() {
-    const adminReviewsList = document.getElementById('adminReviewsList');
-    adminReviewsList.innerHTML = '';
+        .product-info {
+            padding: 1rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #1a365d;
+        }
 
-    const allReviews = [...websiteReviews];
-    products.forEach(product => {
-        product.reviews.forEach(review => {
-            allReviews.push({...review, productName: product.name});
-        });
-    });
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
 
-    if (allReviews.length === 0) {
-        adminReviewsList.innerHTML = '<p>No reviews yet.</p>';
-        return;
-    }
+        .product-description {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            flex-grow: 1;
+        }
 
-    allReviews.forEach((review, index) => {
-        const reviewDiv = document.createElement('div');
-        reviewDiv.style.cssText = 'border: 1px solid #bfdbfe; padding: 1rem; margin: 1rem 0; border-radius: 6px;';
-        reviewDiv.innerHTML = `
-            <h4>${review.name}</h4>
-            <p><strong>Rating:</strong> ${generateStarDisplay(review.rating)}</p>
-            <p><strong>Product:</strong> ${review.productName || 'Website Review'}</p>
-            <p><strong>Review:</strong> ${review.text}</p>
-            <p><strong>Date:</strong> ${new Date(review.date).toLocaleDateString()}</p>
-            <button class="btn btn-danger" onclick="deleteReview(${index}, '${review.productName || 'website'}')">Delete Review</button>
-        `;
-        adminReviewsList.appendChild(reviewDiv);
-    });
-}
+        .add-to-cart {
+            width: 100%;
+            background-color: #1a365d;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            margin-top: auto;
+        }
 
-// Add product form handler
-document.getElementById('productForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+        .add-to-cart:hover {
+            background-color: #142a4a;
+        }
 
-    const files = document.getElementById('productImageFiles').files;
-    const imagePromises = Array.from(files).map(file => {
-        return new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.readAsDataURL(file);
-        });
-    });
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+        }
 
-    Promise.all(imagePromises).then(images => {
-        const newProduct = {
-            id: Date.now(),
-            name: document.getElementById('productName').value,
-            price: parseFloat(document.getElementById('productPrice').value),
-            description: document.getElementById('productDescription').value,
-            category: document.getElementById('productCategory').value,
-            images: images.length > 0 ? images : [`data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150'><rect fill='%23e6f3ff' width='200' height='150'/><text x='100' y='75' text-anchor='middle' font-family='Arial' font-size='14' fill='%23333'>${document.getElementById('productName').value}</text></svg>`],
-            reviews: []
-        };
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            max-width: 90%;
+            width: 600px;
+            max-height: 90%;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            color: #333;
+        }
 
-        products.push(newProduct);
-        loadProducts();
-        loadAdminProducts();
-        saveData();
-        this.reset();
-        showNotification('Product added successfully');
-    });
-});
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
 
-// Delete product
-function deleteProduct(productId) {
-    if (confirm('Are you sure you want to delete this product?')) {
-        products = products.filter(p => p.id !== productId);
-        loadProducts();
-        loadAdminProducts();
-        saveData();
-        showNotification('Product deleted successfully');
-    }
-}
+        .close:hover {
+            color: #333;
+        }
 
-// Delete review
-function deleteReview(reviewIndex, productName) {
-    if (confirm('Are you sure you want to delete this review?')) {
-        if (productName === 'website') {
-            websiteReviews.splice(reviewIndex, 1);
-        } else {
-            const product = products.find(p => p.name === productName);
-            if (product) {
-                product.reviews.splice(reviewIndex, 1);
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #ddd;
+            gap: 1rem;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .cart-item-info {
+            flex-grow: 1;
+        }
+
+        .cart-item-title {
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+            color: #1a365d;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .quantity-btn {
+            background: #1a365d;
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-btn:hover {
+            background: #142a4a;
+        }
+
+        .remove-item {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .remove-item:hover {
+            background: #c0392b;
+        }
+
+        .cart-total {
+            text-align: right;
+            padding-top: 1rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1a365d;
+            border-top: 2px solid #ddd;
+            margin-top: 1rem;
+        }
+        
+        .shipping-total, .grand-total {
+            font-size: 1.1rem;
+            font-weight: normal;
+            margin-top: 0.5rem;
+        }
+        .grand-total {
+             font-size: 1.3rem;
+             font-weight: bold;
+        }
+
+        .admin-form {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1a365d;
+        }
+        .form-group label .required-star {
+            color: #e74c3c;
+            margin-left: 2px;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #1a365d;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .checkout-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .file-upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-area:hover {
+            border-color: #1a365d;
+        }
+
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border: 1px solid #ddd;
+        }
+
+        .payment-info {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .payment-info h4 {
+            color: #1a365d;
+            margin-bottom: 0.5rem;
+        }
+        
+        .payment-method {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1a365d;
+            color: white;
+            padding: 1rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .admin-logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-logo img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .logo-upload-container {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .logo-preview {
+            max-width: 200px;
+            max-height: 100px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal-content {
+                width: 95%;
             }
         }
-        loadAdminReviews();
-        loadReviews();
-        calculateOverallRating();
-        saveData();
-        showNotification('Review deleted successfully');
-    }
-}
-
-// Review form handler
-document.getElementById('reviewForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const newReview = {
-        name: document.getElementById('reviewerName').value,
-        rating: parseInt(document.getElementById('reviewRating').value),
-        text: document.getElementById('reviewText').value,
-        date: new Date().toISOString()
-    };
-
-    websiteReviews.push(newReview);
-    loadReviews();
-    calculateOverallRating();
-    saveData();
-    this.reset();
-    showNotification('Review submitted successfully');
-});
-
-// Load reviews
-function loadReviews() {
-    const reviewsList = document.getElementById('reviewsList');
-    reviewsList.innerHTML = '';
-
-    websiteReviews.forEach(review => {
-        const reviewDiv = document.createElement('div');
-        reviewDiv.className = 'review-item';
-        reviewDiv.innerHTML = `
-            <div class="review-header">
-                <strong>${review.name}</strong>
-                <div class="stars">${generateStarDisplay(review.rating)}</div>
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo" id="logo" onclick="showView('store')">
+                <img id="mainHeaderLogo" alt="Lure Kings Logo">
+                <i id="defaultLogoIcon" class="fas fa-crown"></i>
+                <span id="defaultLogoText">Lure Kings</span>
             </div>
-            <p>${review.text}</p>
-            <small style="color: #4b5e8e;">${new Date(review.date).toLocaleDateString()}</small>
-        `;
-        reviewsList.appendChild(reviewDiv);
-    });
-}
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="showView('store')">Store</button>
+                <button class="btn btn-primary cart-icon" onclick="showCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
 
-// Calculate overall rating
-function calculateOverallRating() {
-    const overallRating = document.getElementById('overallRating');
-    const overallRatingText = document.getElementById('overallRatingText');
+    <div class="toast" id="toast">Item added to cart!</div>
 
-    if (websiteReviews.length === 0) {
-        overallRating.innerHTML = generateStarDisplay(0);
-        overallRatingText.textContent = 'No reviews yet';
-        return;
-    }
+    <div class="container">
+        <div id="storeView">
+            <div class="hero">
+                <h1>Premium Fishing Lures</h1>
+                <p>High-quality fishing lures for the serious angler</p>
+            </div>
 
-    const avgRating = websiteReviews.reduce((sum, review) => sum + review.rating, 0) / websiteReviews.length;
-    overallRating.innerHTML = generateStarDisplay(avgRating);
-    overallRatingText.textContent = `${avgRating.toFixed(1)} out of 5 (${websiteReviews.length} reviews)`;
-}
+            <div class="categories">
+                <button class="category-btn active" onclick="filterByCategory('all')">All Lures</button>
+                <button class="category-btn" onclick="filterByCategory('jigs')">Jigs</button>
+                <button class="category-btn" onclick="filterByCategory('soft-plastics')">Soft Plastics</button>
+                <button class="category-btn" onclick="filterByCategory('topwaters')">Topwaters</button>
+                <button class="category-btn" onclick="filterByCategory('spinnerbaits')">Spinnerbaits</button>
+            </div>
 
-// Close modals when clicking outside
-window.addEventListener('click', function(e) {
-    const checkoutModal = document.getElementById('checkoutModal');
-    const adminPasswordModal = document.getElementById('adminPasswordModal');
-    if (e.target === checkoutModal) {
-        closeCheckout();
-    }
-    if (e.target === adminPasswordModal) {
-        closeAdminPasswordModal();
-    }
-});
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
 
-// Initialize the application
-init();
-</script>
+        <div id="adminView" class="hidden">
+            <div class="hero">
+                <div class="admin-logo">
+                    <img id="companyLogo" src="" alt="Lure Kings Logo">
+                </div>
+                <h1>Admin Dashboard</h1>
+                <p>Manage your Lure Kings inventory</p>
+            </div>
+
+            <div class="logo-upload-container">
+                <h3>Upload Company Logo</h3>
+                <div class="file-upload-area" onclick="document.getElementById('logoUpload').click()">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: #1a365d; margin-bottom: 0.5rem;"></i>
+                    <p>Click to upload logo or drag & drop</p>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">Supports JPG, PNG</p>
+                </div>
+                <input type="file" id="logoUpload" accept="image/*" style="display: none;">
+                <img id="logoPreview" class="logo-preview">
+            </div>
+
+            <div class="admin-form">
+                <h2 style="margin-bottom: 1rem; color: #1a365d;">Add/Edit Product</h2>
+                <form id="productForm">
+                    <input type="hidden" id="productId">
+                    <div class="form-group">
+                        <label for="productName">Product Name</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Category</label>
+                        <select id="productCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="jigs">Jigs</option>
+                            <option value="soft-plastics">Soft Plastics</option>
+                            <option value="topwaters">Topwaters</option>
+                            <option value="spinnerbaits">Spinnerbaits</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Price ($)</label>
+                        <input type="number" id="productPrice" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productDescription">Description</label>
+                        <textarea id="productDescription" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="productImage">Product Image</label>
+                        <div class="file-upload-area" onclick="document.getElementById('imageUpload').click()">
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: #1a365d; margin-bottom: 0.5rem;"></i>
+                            <p>Click to upload image or drag & drop</p>
+                            <p style="font-size: 0.9rem; opacity: 0.7;">Supports JPG, PNG, GIF</p>
+                        </div>
+                        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                        <input type="text" id="productImageURL" placeholder="Or enter image URL">
+                        <img id="imagePreview" class="image-preview" style="display: none;">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        Save Product
+                    </button>
+                </form>
+            </div>
+
+            <div class="admin-form">
+                <h2 style="margin-bottom: 1rem; color: #1a365d;">Manage Existing Products</h2>
+                <div id="adminProductsList" class="products-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCart()">&times;</span>
+            <h2 style="margin-bottom: 1rem; color: #1a365d;">
+                Shopping Cart
+            </h2>
+            <div id="cartItems"></div>
+            <div class="cart-total" id="cartTotal">Total: $0.00</div>
+            <button class="btn btn-primary" id="checkoutBtn" onclick="showCheckout()" style="width: 100%; margin-top: 1rem;">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCheckout()">&times;</span>
+            <h2 style="margin-bottom: 1rem; color: #1a365d;">
+                Secure Checkout
+            </h2>
+            
+            <form id="checkoutForm" action="https://formsubmit.co/lure.kings.fishing.aus@gmail.com" method="POST">
+                <input type="hidden" name="_subject" value="New Order from Lure Kings">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_next" id="formSubmitRedirect">
+                <input type="hidden" name="_cc" value="lure.kings.fishing.aus@gmail.com">
+                <input type="hidden" name="_autoresponse" value="Thank you for your order! We'll process it shortly.">
+                
+                <div class="form-group">
+                    <label for="customerName">Full Name<span class="required-star">*</span></label>
+                    <input type="text" id="customerName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerEmail">Email Address<span class="required-star">*</span></label>
+                    <input type="email" id="customerEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">Phone Number<span class="required-star">*</span></label>
+                    <input type="tel" id="customerPhone" name="phone" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerAddress">Delivery Address<span class="required-star">*</span></label>
+                    <textarea id="customerAddress" name="address" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group payment-info">
+                    <h4>Shipping from Chatswood, NSW<span class="required-star">*</span></h4>
+                    <p style="font-size: 0.8em; opacity:0.7; margin-bottom: 10px;">This is a placeholder for a real shipping calculator.</p>
+                     <select id="shippingOptions" name="shipping_zone" required>
+                         <option value="">-- Select Shipping Zone --</option>
+                         <option value="10.00">Local (5km Radius) - $10.00</option>
+                         <option value="15.00">Sydney Metro - $15.00</option>
+                         <option value="25.00">NSW Regional - $25.00</option>
+                         <option value="35.00">Interstate - $35.00</option>
+                     </select>
+                </div>
+                
+                <div class="form-group payment-info">
+                    <h4>Payment Method<span class="required-star">*</span></h4>
+                    <div class="payment-method">
+                        <input type="radio" id="bankTransfer" name="payment_method" value="Bank Transfer" required>
+                        <label for="bankTransfer">Direct Bank Transfer</label>
+                        <div id="bankDetails" class="hidden" style="padding: 10px; font-size: 0.9em; opacity: 0.8; background: #fff; border-radius: 4px; margin-top: 5px;">
+                            <p><strong>Bank:</strong> ANZ Bank | <strong>Account:</strong> Lure Kings Pty Ltd<br>
+                               <strong>BSB:</strong> 012-345 | <strong>Acc No:</strong> 123456789<br>
+                               Use your Order ID as reference.</p>
+                        </div>
+                    </div>
+                    <div class="payment-method">
+                        <input type="radio" id="stripe" name="payment_method" value="Stripe">
+                        <label for="stripe">Stripe (Credit/Debit Card)</label>
+                        <div id="stripe-element" class="hidden" style="padding: 10px;">
+                            </div>
+                    </div>
+                     <div class="payment-method">
+                        <input type="radio" id="paypal" name="payment_method" value="PayPal">
+                        <label for="paypal">PayPal</label>
+                        <div id="paypal-button-container" class="hidden" style="padding: 10px;">
+                            </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Order Summary</label>
+                    <div id="orderItemsDisplay" style="padding: 0.5rem; background: #f5f5f5; border-radius: 4px;"></div>
+                </div>
+                <div class="cart-total" id="checkoutTotal"></div>
+                
+                <input type="hidden" id="orderItems" name="order_items">
+                <input type="hidden" id="orderTotal" name="order_grand_total">
+                <input type="hidden" id="shippingCost" name="shipping_cost">
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                    Place Order
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // --- GLOBAL STATE ---
+        let isAdminLoggedIn = false;
+        const ADMIN_PASSWORD = "Maxchingershambo08"; // Changed password
+        let clickCount = 0;
+        let clickTimeout;
+        let products = [];
+        let cart = [];
+        let currentFilter = 'all';
+        let currentShippingCost = 0;
+        
+        // --- INITIAL DATA (FALLBACK) ---
+        const defaultProducts = [
+            { id: 1, name: "Bass Pro Jig Head", category: "jigs", price: 12.99, description: "Premium jig head perfect for bass fishing with realistic action.", image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop" },
+            { id: 2, name: "Soft Plastic Worm", category: "soft-plastics", price: 8.49, description: "Lifelike soft plastic worm that attracts fish with its natural movement.", image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop" },
+            { id: 3, name: "Popper Topwater Lure", category: "topwaters", price: 15.99, description: "Creates explosive surface action that drives fish wild.", image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop" },
+            { id: 4, name: "Colorado Spinnerbait", category: "spinnerbaits", price: 11.79, description: "Classic spinnerbait with Colorado blade for maximum flash and vibration.", image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop" }
+        ];
+
+        // --- APP INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', function() {
+            init();
+        });
+
+        function init() {
+            // Load data from localStorage
+            const storedProducts = localStorage.getItem('products');
+            if (storedProducts) {
+                products = JSON.parse(storedProducts);
+            } else {
+                products = defaultProducts;
+                saveProductsToStorage();
+            }
+
+            const storedCart = localStorage.getItem('cart');
+            cart = storedCart ? JSON.parse(storedCart) : [];
+
+            // Load logo and apply it to both admin and customer views
+            const savedLogo = localStorage.getItem('companyLogo');
+            if (savedLogo) {
+                applyLogo(savedLogo);
+            }
+            
+            // Render initial views
+            renderProducts();
+            updateCartCount();
+            renderAdminProducts();
+            
+            // Setup listeners
+            setupEventListeners();
+            setupImageUpload('imageUpload', 'imagePreview', 'productImageURL', '.admin-form .file-upload-area');
+            setupImageUpload('logoUpload', 'logoPreview', null, '.logo-upload-container .file-upload-area', handleLogoUpload);
+
+            // Handle order success message from redirect
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('order') && urlParams.get('order') === 'success') {
+                showToast("Thank you! Your order has been placed successfully.");
+                // Clean up the URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
+        // --- EVENT LISTENERS ---
+        function setupEventListeners() {
+            document.getElementById('logo').addEventListener('click', handleCrownClick);
+            
+            document.getElementById('productForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveProduct();
+            });
+
+            document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+                if (!this.checkValidity()) {
+                    e.preventDefault();
+                    alert("Please fill out all required fields.");
+                    return;
+                }
+                prepareOrderForSubmission();
+            });
+            
+            document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    document.getElementById('bankDetails').classList.toggle('hidden', e.target.id !== 'bankTransfer');
+                    document.getElementById('stripe-element').classList.toggle('hidden', e.target.id !== 'stripe');
+                    document.getElementById('paypal-button-container').classList.toggle('hidden', e.target.id !== 'paypal');
+                });
+            });
+            
+            // NEW: Shipping options listener
+            document.getElementById('shippingOptions').addEventListener('change', (e) => {
+                currentShippingCost = parseFloat(e.target.value) || 0;
+                updateCheckoutSummary(); // Update total when shipping changes
+            });
+        }
+        
+        // --- DATA PERSISTENCE ---
+        function saveProductsToStorage() {
+            localStorage.setItem('products', JSON.stringify(products));
+        }
+
+        function saveCartToStorage() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+        
+        // --- VIEW MANAGEMENT & RENDERING ---
+        function showView(view) {
+            if (view === 'admin' && !isAdminLoggedIn) {
+                showAdminLogin();
+                return;
+            }
+            document.getElementById('storeView').classList.toggle('hidden', view !== 'store');
+            document.getElementById('adminView').classList.toggle('hidden', view !== 'admin');
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+            const filteredProducts = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
+            
+            filteredProducts.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <div class="product-price">$${product.price.toFixed(2)}</div>
+                        <p class="product-description">${product.description}</p>
+                        <button class="add-to-cart" onclick="addToCart(${product.id})">Add to Cart</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterByCategory(category) {
+            currentFilter = category;
+            renderProducts();
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes(category)) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // --- CART FUNCTIONALITY ---
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({...product, quantity: 1});
+            }
+            
+            updateCartCount();
+            showToast(`${product.name} added to cart`);
+            saveCartToStorage();
+        }
+
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+            document.getElementById('checkoutBtn').disabled = count === 0;
+        }
+        
+        function showCart() {
+            const modal = document.getElementById('cartModal');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotalEl = document.getElementById('cartTotal');
+            
+            cartItems.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p>Your cart is empty.</p>';
+                cartTotalEl.textContent = 'Total: $0.00';
+            } else {
+                let total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                cart.forEach(item => {
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <div class="cart-item-title">${item.name}</div>
+                            <div>$${item.price.toFixed(2)} each</div>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="updateCartItem(${item.id}, -1)">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="quantity-btn" onclick="updateCartItem(${item.id}, 1)">+</button>
+                            </div>
+                        </div>
+                        <div>
+                           <div style="font-weight: bold; text-align: right;">$${(item.price * item.quantity).toFixed(2)}</div>
+                           <button class="remove-item" style="margin-top: 5px;" onclick="removeFromCart(${item.id})">Remove</button>
+                        </div>
+                    `;
+                    cartItems.appendChild(cartItem);
+                });
+                cartTotalEl.textContent = `Total: $${total.toFixed(2)}`;
+            }
+            modal.style.display = 'block';
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+
+        function updateCartItem(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            if (!item) return;
+            
+            item.quantity += change;
+            
+            if (item.quantity <= 0) {
+                removeFromCart(productId);
+            } else {
+                showCart(); // Refresh cart display
+                updateCartCount();
+                saveCartToStorage();
+            }
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            showCart(); // Refresh cart display
+            updateCartCount();
+            saveCartToStorage();
+        }
+
+        // --- CHECKOUT FUNCTIONALITY ---
+        function showCheckout() {
+            if (cart.length === 0) { return; }
+            // Set the dynamic redirect URL for FormSubmit
+            const redirectUrl = `${window.location.origin}${window.location.pathname}?order=success`;
+            document.getElementById('formSubmitRedirect').value = redirectUrl;
+
+            updateCheckoutSummary();
+            closeCart();
+            document.getElementById('checkoutModal').style.display = 'block';
+        }
+        
+        function updateCheckoutSummary() {
+            const orderItemsDisplay = document.getElementById('orderItemsDisplay');
+            const checkoutTotalEl = document.getElementById('checkoutTotal');
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const grandTotal = subtotal + currentShippingCost;
+
+            let orderItemsHTML = '<ul style="list-style-type: none; padding: 0;">';
+             cart.forEach(item => {
+                orderItemsHTML += `<li style="margin-bottom: 0.5rem; ">
+                    ${item.name} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}
+                </li>`;
+            });
+            orderItemsHTML += '</ul>';
+            orderItemsDisplay.innerHTML = orderItemsHTML;
+            
+            checkoutTotalEl.innerHTML = `
+                <div>Subtotal: $${subtotal.toFixed(2)}</div>
+                <div class="shipping-total">Shipping: $${currentShippingCost.toFixed(2)}</div>
+                <div class="grand-total">Grand Total: $${grandTotal.toFixed(2)}</div>
+            `;
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkoutModal').style.display = 'none';
+        }
+        
+        function prepareOrderForSubmission() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const grandTotal = subtotal + currentShippingCost;
+
+            const orderSummary = cart.map(item => 
+                `${item.name} (Qty: ${item.quantity})`
+            ).join(', ');
+            
+            document.getElementById('orderItems').value = orderSummary;
+            document.getElementById('shippingCost').value = `$${currentShippingCost.toFixed(2)}`;
+            document.getElementById('orderTotal').value = `$${grandTotal.toFixed(2)}`;
+
+            // Clear cart after preparing for submission
+            cart = [];
+            updateCartCount();
+            saveCartToStorage();
+        }
+
+        // --- ADMIN FUNCTIONALITY ---
+        function handleCrownClick() {
+            if (document.getElementById('adminView').classList.contains('hidden')) {
+                clickCount++;
+                clearTimeout(clickTimeout);
+                clickTimeout = setTimeout(() => { clickCount = 0; }, 1000);
+                if (clickCount >= 3) {
+                    clickCount = 0;
+                    showAdminLogin();
+                }
+            } else {
+                 showView('store');
+            }
+        }
+
+        function showAdminLogin() {
+            const password = prompt("Enter admin password:");
+            if (password === ADMIN_PASSWORD) {
+                isAdminLoggedIn = true;
+                showView('admin');
+            } else if (password !== null) {
+                alert('Incorrect password!');
+            }
+        }
+
+        function renderAdminProducts() {
+            const container = document.getElementById('adminProductsList');
+            container.innerHTML = '';
+            
+            products.slice().reverse().forEach(product => {
+                const productElement = document.createElement('div');
+                productElement.className = 'product-card';
+                productElement.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <p style="font-size:0.9em; color:#666; text-transform: capitalize;">${product.category}</p>
+                        <p style="font-weight:bold; color: #e74c3c;">$${product.price.toFixed(2)}</p>
+                        <div style="margin-top: 1rem;">
+                           <button onclick="editProduct(${product.id})" class="btn btn-secondary" style="color: #333; border-color: #333;">Edit</button>
+                           <button onclick="deleteProduct(${product.id})" class="btn" style="background: #e74c3c; color: white;">Delete</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(productElement);
+            });
+        }
+        
+        function saveProduct() {
+            const id = document.getElementById('productId').value;
+            const name = document.getElementById('productName').value;
+            const category = document.getElementById('productCategory').value;
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const description = document.getElementById('productDescription').value;
+            const image = document.getElementById('productImageURL').value;
+            
+            if (!name || !category || isNaN(price) || !description || !image) {
+                alert('Please fill all fields and provide an image URL or upload.');
+                return;
+            }
+
+            if (id) { // Editing existing product
+                const index = products.findIndex(p => p.id == id);
+                if (index > -1) {
+                    products[index] = { ...products[index], name, category, price, description, image };
+                }
+            } else { // Adding new product
+                 const newProduct = {
+                    id: Date.now(), // Use timestamp for a unique ID
+                    name, category, price, description, image
+                };
+                products.push(newProduct);
+            }
+            
+            saveProductsToStorage();
+            renderProducts();
+            renderAdminProducts();
+            
+            document.getElementById('productForm').reset();
+            document.getElementById('productId').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            showToast(id ? 'Product updated successfully!' : 'Product added successfully!');
+        }
+
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+            
+            document.getElementById('productId').value = product.id;
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productCategory').value = product.category;
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productDescription').value = product.description;
+            document.getElementById('productImageURL').value = product.image;
+            
+            const preview = document.getElementById('imagePreview');
+            preview.src = product.image;
+            preview.style.display = 'block';
+            
+            document.getElementById('productForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function deleteProduct(id) {
+            if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) return;
+            
+            products = products.filter(p => p.id !== id);
+            saveProductsToStorage();
+            renderProducts();
+            renderAdminProducts();
+            showToast('Product deleted successfully.');
+        }
+
+        // --- UTILITY FUNCTIONS ---
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        function applyLogo(logoUrl) {
+            // Apply to customer-facing logo
+            document.getElementById('mainHeaderLogo').src = logoUrl;
+            document.getElementById('mainHeaderLogo').style.display = 'inline';
+            document.getElementById('defaultLogoIcon').style.display = 'none';
+            document.getElementById('defaultLogoText').style.display = 'none';
+            // Apply to admin panel logo
+            document.getElementById('companyLogo').src = logoUrl;
+        }
+
+        function setupImageUpload(inputId, previewId, urlInputId, areaSelector, customHandler) {
+            const fileInput = document.getElementById(inputId);
+            const uploadArea = document.querySelector(areaSelector);
+
+            const handler = customHandler || function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(previewId).src = e.target.result;
+                    document.getElementById(previewId).style.display = 'block';
+                    if (urlInputId) {
+                        document.getElementById(urlInputId).value = e.target.result;
+                    }
+                };
+                reader.readAsDataURL(file);
+            };
+
+            fileInput.addEventListener('change', handler);
+            uploadArea.addEventListener('click', () => fileInput.click());
+
+            ['dragover', 'drop', 'dragleave'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (eventName === 'dragover') uploadArea.style.borderColor = '#1a365d';
+                    else uploadArea.style.borderColor = '#ddd';
+                    if (eventName === 'drop' && e.dataTransfer.files.length) {
+                        fileInput.files = e.dataTransfer.files;
+                        handler({ target: fileInput });
+                    }
+                });
+            });
+        }
+        
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const logoUrl = e.target.result;
+                // Preview in admin panel
+                document.getElementById('logoPreview').src = logoUrl;
+                document.getElementById('logoPreview').style.display = 'block';
+                // Apply logo everywhere
+                applyLogo(logoUrl);
+                // Persist logo
+                localStorage.setItem('companyLogo', logoUrl);
+            };
+            reader.readAsDataURL(file);
+        }
+
+    </script>
 </body>
 </html>
