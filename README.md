@@ -17,9 +17,6 @@
         .btn-primary { background-color: #1a365d; color: white; }
         .btn-secondary { background-color: transparent; color: white; border: 1px solid white; }
         .btn-danger { background-color: #c0392b; color: white; }
-        /* NEW STYLE FOR LIGHT BUTTONS */
-        .btn-light { background-color: #f0f0f0; color: #333; border: 1px solid #ddd; }
-        .btn-light:hover { background-color: #e0e0e0; opacity: 1; }
         .btn:hover { opacity: 0.9; }
         .cart-icon { position: relative; }
         .cart-count { position: absolute; top: -8px; right: -8px; background: #e74c3c; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; }
@@ -104,6 +101,10 @@
     // #############################################################################
     // #################### START OF YOUR PRODUCT DATABASE #########################
     // #############################################################################
+    //
+    // --> To update your products, DELETE the lines between here and the "END" comment,
+    // --> then PASTE the new code generated from the admin panel.
+    //
     let products = [
       {
         "id": 1,
@@ -122,7 +123,11 @@
         "image": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop"
       }
     ];
+    //
+    // --> END OF YOUR PRODUCT DATABASE
+    //
     // #############################################################################
+
 
     // --- GLOBAL STATE ---
     let isAdminLoggedIn = false;
@@ -150,21 +155,26 @@
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('order') && urlParams.get('order') === 'success') {
             showToast("Thank you! Your order has been placed successfully.");
-            localStorage.removeItem('cart');
+            localStorage.removeItem('cart'); // Clear cart after successful order
             cart = [];
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     }
 
-    // MODIFIED: Checkout Modal is updated with new fields and buttons
     function createModals() {
         document.getElementById('cartModal').innerHTML = `<div class="modal-content"><span class="close" onclick="closeCart()">&times;</span><h2 style="margin-bottom: 1rem; color: #1a365d;">Shopping Cart</h2><div id="cartItems"></div><div class="cart-total" id="cartTotalDisplay">Total: $0.00</div><button class="btn btn-primary" onclick="showCheckout()" style="width: 100%; margin-top: 1rem;">Proceed to Checkout</button></div>`;
         
         document.getElementById('checkoutModal').innerHTML = `
             <div class="modal-content">
                 <span class="close" onclick="closeCheckout()">&times;</span>
-                <h2 style="margin-bottom: 1.5rem; color: #1a365d;">Customer Details</h2>
-                <form id="checkoutForm" onsubmit="return false;">
+                <h2 style="margin-bottom: 1rem; color: #1a365d;">Secure Checkout</h2>
+                <form id="checkoutForm" method="POST">
+                    <input type="hidden" name="_subject" value="New Order from Lure Kings">
+                    <input type="hidden" name="_cc" value="lure.kings.fishing.aus@gmail.com">
+                    <input type="hidden" name="_autoresponse" value="Thank you for your order! We'll process it shortly.">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" id="form-next-url" name="_next">
+                    
                     <div class="form-group">
                         <label for="customerName">Full Name<span class="required-star">*</span></label>
                         <input type="text" id="customerName" name="Name" required>
@@ -174,20 +184,24 @@
                         <input type="email" id="customerEmail" name="Email" required>
                     </div>
                     <div class="form-group">
-                        <label for="customerPhone">Phone Number<span class="required-star">*</span></label>
-                        <input type="tel" id="customerPhone" name="Phone" required>
-                    </div>
-                    <div class="form-group">
                         <label for="customerAddress">Delivery Address<span class="required-star">*</span></label>
                         <textarea id="customerAddress" name="Address" rows="3" required></textarea>
                     </div>
                     <div class="form-group">
                         <label for="orderNotes">Order Notes (Optional)</label>
-                        <textarea id="orderNotes" name="Notes" rows="3" placeholder="Any special instructions..."></textarea>
+                        <textarea id="orderNotes" name="Notes" rows="2"></textarea>
                     </div>
+
+                    <div class="form-group">
+                        <label>Order Summary</label>
+                        <div id="orderItemsDisplay" style="padding: 0.5rem; background: #f5f5f5; border-radius: 4px;"></div>
+                    </div>
+                    <div class="cart-total" id="checkoutTotalDisplay"></div>
                     
-                    <button type="button" class="btn btn-light" style="width: 100%; margin-top: 1rem; padding: 0.75rem;" onclick="handleCheckoutAction('shipping')">DM for Shipping prices.</button>
-                    <button type="button" class="btn btn-light" style="width: 100%; margin-top: 0.5rem; padding: 0.75rem;" onclick="handleCheckoutAction('transfer')">DM for Direct Transfer.</button>
+                    <input type="hidden" id="orderItemsInput" name="Order_Items">
+                    <input type="hidden" id="orderTotalInput" name="Total">
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Place Order</button>
                 </form>
             </div>`;
     }
@@ -227,11 +241,11 @@
             </div>`;
     }
 
-    // MODIFIED: Removed event listener for old checkout form submission
     function setupEventListeners() {
         document.getElementById('logo').addEventListener('click', handleLogoClick);
         document.getElementById('productForm').addEventListener('submit', handleFormSubmit);
         document.getElementById('productImageFile').addEventListener('change', handleImageFileChange);
+        document.getElementById('checkoutForm').addEventListener('submit', prepareOrderForSubmission);
     }
     
     function handleLogoClick() {
@@ -265,6 +279,7 @@
         e.preventDefault();
         const idInput = document.getElementById('productId').value;
         const id = idInput ? parseInt(idInput) : null;
+
         const newProductData = {
             id: id || Date.now(),
             name: document.getElementById('productName').value,
@@ -273,16 +288,20 @@
             description: document.getElementById('productDescription').value,
             image: tempProductImage,
         };
+
         if (!newProductData.name || !newProductData.category || isNaN(newProductData.price) || !newProductData.image) {
             alert('Please fill all fields and upload an image.');
             return;
         }
+
         const index = products.findIndex(p => p.id === id);
+
         if (index > -1) {
             products[index] = newProductData;
         } else {
             products.push(newProductData);
         }
+        
         renderProducts();
         renderAdminProducts();
         cancelEdit();
@@ -338,44 +357,34 @@
         }
     }
     
-    // NEW: Handles the new DM buttons, creating a pre-filled email
-    function handleCheckoutAction(actionType) {
-        const form = document.getElementById('checkoutForm');
-        if (!form.checkValidity()) {
-            form.reportValidity();
-            return;
-        }
-
-        const name = document.getElementById('customerName').value;
-        const email = document.getElementById('customerEmail').value;
-        const phone = document.getElementById('customerPhone').value;
-        const address = document.getElementById('customerAddress').value;
-        const notes = document.getElementById('orderNotes').value;
-
+    function prepareOrderForSubmission(e) {
         const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         const orderSummary = cart.map(item => `${item.name} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`).join('\n');
         
-        const subject = actionType === 'shipping' 
-            ? 'Inquiry for Shipping Prices - Lure Kings Order'
-            : 'Inquiry for Direct Transfer - Lure Kings Order';
-
-        const body = `Hello,\n\nI'd like to inquire about my order.\n\n--- Customer Details ---\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nDelivery Address: ${address}\nNotes: ${notes || 'N/A'}\n\n--- Order Summary ---\n${orderSummary}\n\nTotal: $${total.toFixed(2)}\n----------------------\n\nPlease provide me with the details for ${actionType === 'shipping' ? 'shipping costs' : 'direct bank transfer'}.\n\nThank you.`;
-
-        const mailtoLink = `mailto:lure.kings.fishing.aus@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        window.location.href = mailtoLink;
+        document.getElementById('orderItemsInput').value = orderSummary;
+        document.getElementById('orderTotalInput').value = `$${total.toFixed(2)}`;
+        
+        const form = document.getElementById('checkoutForm');
+        form.action = "https://formsubmit.co/lure.kings.fishing.aus@gmail.com";
+        document.getElementById('form-next-url').value = `${window.location.origin}${window.location.pathname}?order=success`;
     }
 
     // --- RENDER AND UTILITY FUNCTIONS ---
+
+    // NEW: Central function to save the cart and refresh all relevant UI components
     function saveAndRefreshCart() {
         localStorage.setItem('cart', JSON.stringify(cart));
         updateCartCount();
         updateCartDisplay();
-        updateCheckoutDisplay();
+        updateCheckoutDisplay(); // Also refresh the checkout modal to keep it in sync
     }
 
+    // NEW: Functions to adjust item quantity from the cart
     function increaseQuantity(productId) {
         const item = cart.find(i => i.id === productId);
-        if (item) item.quantity++;
+        if (item) {
+            item.quantity++;
+        }
         saveAndRefreshCart();
     }
 
@@ -385,6 +394,7 @@
             item.quantity--;
             saveAndRefreshCart();
         } else if (item) {
+            // If quantity is 1, decreasing it removes the item entirely
             removeFromCart(productId);
         }
     }
@@ -410,6 +420,7 @@
     function closeCart() { document.getElementById('cartModal').style.display = 'none'; }
     function showAdminLogin() { const pw = prompt("Enter admin password:"); if (pw === ADMIN_PASSWORD) { isAdminLoggedIn = true; showView('admin'); } else if (pw !== null) { alert('Incorrect password!'); } }
     
+    // MODIFIED & FIXED: Cart display now includes quantity buttons and syntax is corrected.
     function updateCartDisplay() {
         const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         const cartItemsEl = document.getElementById('cartItems');
@@ -435,7 +446,7 @@
 
     function showCheckout() { if(cart.length === 0) { alert("Your cart is empty!"); return; } updateCheckoutDisplay(); document.getElementById('checkoutModal').style.display = 'block'; closeCart(); }
     function closeCheckout() { document.getElementById('checkoutModal').style.display = 'none'; }
-    function updateCheckoutDisplay() { const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0); }
+    function updateCheckoutDisplay() { const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0); document.getElementById('orderItemsDisplay').innerHTML = cart.map(item => `<div class="summary-line"><span>${item.name} (x${item.quantity})</span><span>$${(item.price * item.quantity).toFixed(2)}</span></div>`).join(''); document.getElementById('checkoutTotalDisplay').textContent = `Total: $${total.toFixed(2)}`; }
     
     </script>
 </body>
