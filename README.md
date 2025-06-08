@@ -5,60 +5,85 @@
     <title>Lure Kings - Premium Fishing Lures</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* All CSS remains the same */
+        /* All CSS remains the same except for these mobile optimizations */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5; color: #333; line-height: 1.6; }
-        .header { background-color: #1a365d; padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .header { background-color: #1a365d; padding: 1rem; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
-        .logo { font-size: 2rem; font-weight: bold; color: white; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: white; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
         #logoText { display: flex; align-items: center; gap: 0.5rem; }
-        .nav-buttons { display: flex; gap: 1rem; align-items: center; }
-        .btn { padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; }
+        .nav-buttons { display: flex; gap: 0.5rem; align-items: center; }
+        .btn { padding: 0.5rem 0.75rem; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; font-size: 0.9rem; }
         .btn-primary { background-color: #1a365d; color: white; }
         .btn-secondary { background-color: transparent; color: white; border: 1px solid white; }
         .btn-danger { background-color: #c0392b; color: white; }
         .btn:hover { opacity: 0.9; }
         .cart-icon { position: relative; }
         .cart-count { position: absolute; top: -8px; right: -8px; background: #e74c3c; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; }
-        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
-        .hero { text-align: center; margin-bottom: 3rem; padding: 2rem 0; background-color: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; color: #1a365d; }
-        .hero p { font-size: 1.1rem; max-width: 600px; margin: 0 auto; color: #666; }
-        .categories { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; justify-content: center; }
-        .category-btn { padding: 0.5rem 1rem; background: white; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; }
+        .container { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; }
+        .hero { text-align: center; margin-bottom: 1.5rem; padding: 1.5rem 0; background-color: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .hero h1 { font-size: 1.8rem; margin-bottom: 0.75rem; color: #1a365d; }
+        .hero p { font-size: 1rem; max-width: 600px; margin: 0 auto; color: #666; }
+        .categories { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; justify-content: center; }
+        .category-btn { padding: 0.5rem 0.75rem; background: white; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; font-size: 0.85rem; }
         .category-btn:hover, .category-btn.active { background: #1a365d; border-color: #1a365d; color: white; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
         .product-card { background: white; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .product-image { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid #ddd; }
-        .product-info { padding: 1rem; flex-grow: 1; display: flex; flex-direction: column; }
-        .product-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 0.5rem; color: #1a365d; }
-        .product-price { font-size: 1.2rem; font-weight: bold; color: #e74c3c; margin-bottom: 1rem; }
-        .product-description { color: #666; margin-bottom: 1rem; font-size: 0.9rem; flex-grow: 1; }
-        .add-to-cart { width: 100%; background-color: #1a365d; color: white; border: none; padding: 0.5rem; border-radius: 4px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; margin-top: auto; }
+        .product-image { width: 100%; height: 120px; object-fit: cover; border-bottom: 1px solid #ddd; }
+        .product-info { padding: 0.75rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .product-title { font-size: 0.95rem; font-weight: bold; margin-bottom: 0.5rem; color: #1a365d; }
+        .product-price { font-size: 1rem; font-weight: bold; color: #e74c3c; margin-bottom: 0.75rem; }
+        .product-description { color: #666; margin-bottom: 0.75rem; font-size: 0.8rem; flex-grow: 1; }
+        .add-to-cart { width: 100%; background-color: #1a365d; color: white; border: none; padding: 0.5rem; border-radius: 4px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; margin-top: auto; font-size: 0.85rem; }
         .add-to-cart:hover { background-color: #142a4a; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 2000; }
-        .modal-content { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 8px; padding: 2rem; max-width: 90%; width: 600px; max-height: 90%; overflow-y: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.2); color: #333; }
-        .close { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; cursor: pointer; color: #666; }
+        .modal-content { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 8px; padding: 1.5rem; width: 90%; max-width: 600px; max-height: 90%; overflow-y: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.2); color: #333; }
+        .close { position: absolute; top: 0.5rem; right: 0.5rem; font-size: 1.5rem; cursor: pointer; color: #666; }
         .close:hover { color: #333; }
-        .admin-form { background: white; border: 1px solid #ddd; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #1a365d; }
+        .admin-form { background: white; border: 1px solid #ddd; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 0.75rem; }
+        .form-group label { display: block; margin-bottom: 0.25rem; font-weight: 600; color: #1a365d; font-size: 0.9rem; }
         .form-group label .required-star { color: #e74c3c; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem; }
         .hidden { display: none !important; }
-        .toast { position: fixed; bottom: 20px; right: 20px; background: #2c3e50; color: white; padding: 1rem; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 3000; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #2c3e50; color: white; padding: 0.75rem; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 3000; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; font-size: 0.9rem; max-width: 80%; }
         .toast.show { opacity: 1; visibility: visible; }
-        #exportData { width: 100%; height: 250px; font-family: monospace; margin-top: 1rem; white-space: pre; overflow-wrap: normal; overflow-x: scroll; }
-        .admin-note { background-color: #eef2f7; border-left: 4px solid #1a365d; padding: 1rem; margin-bottom: 1rem; border-radius: 4px; }
-        .image-preview-container { margin-top: 1rem; }
-        .image-preview { max-width: 200px; max-height: 200px; border-radius: 8px; border: 1px solid #ddd; }
-        .summary-line { display: flex; justify-content: space-between; font-size: 1rem; padding: 0.25rem 0; }
-        .cart-total { text-align: right; padding: 1rem 0; font-size: 1.3rem; font-weight: bold; color: #1a365d; border-top: 1px solid #ddd; margin-top: 1rem; }
-        .payment-note { background-color: #f8f9fa; padding: 0.75rem; border-radius: 4px; margin: 0.5rem 0; text-align: center; font-size: 0.9rem; border-left: 3px solid #1a365d; }
+        #exportData { width: 100%; height: 200px; font-family: monospace; margin-top: 1rem; white-space: pre; overflow-wrap: normal; overflow-x: scroll; font-size: 0.8rem; }
+        .admin-note { background-color: #eef2f7; border-left: 4px solid #1a365d; padding: 0.75rem; margin-bottom: 1rem; border-radius: 4px; font-size: 0.9rem; }
+        .image-preview-container { margin-top: 0.75rem; }
+        .image-preview { max-width: 150px; max-height: 150px; border-radius: 8px; border: 1px solid #ddd; }
+        .summary-line { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 0.25rem 0; }
+        .cart-total { text-align: right; padding: 0.75rem 0; font-size: 1.1rem; font-weight: bold; color: #1a365d; border-top: 1px solid #ddd; margin-top: 0.75rem; }
+        .payment-note { background-color: #f8f9fa; padding: 0.5rem; border-radius: 4px; margin: 0.5rem 0; text-align: center; font-size: 0.85rem; border-left: 3px solid #1a365d; }
+        
+        /* Mobile-specific adjustments */
+        @media (min-width: 768px) {
+            .header { padding: 1rem 2rem; }
+            .logo { font-size: 2rem; }
+            .btn { padding: 0.5rem 1rem; font-size: 1rem; }
+            .hero { padding: 2rem 0; margin-bottom: 3rem; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.1rem; }
+            .category-btn { padding: 0.5rem 1rem; font-size: 1rem; }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+            .product-image { height: 200px; }
+            .product-title { font-size: 1.1rem; }
+            .product-price { font-size: 1.2rem; }
+            .product-description { font-size: 0.9rem; }
+            .add-to-cart { font-size: 1rem; }
+            .modal-content { padding: 2rem; }
+            .admin-form { padding: 1.5rem; margin-bottom: 2rem; }
+            .form-group label { font-size: 1rem; margin-bottom: 0.5rem; }
+            .form-group input, .form-group textarea, .form-group select { font-size: 1rem; }
+            .toast { font-size: 1rem; padding: 1rem; }
+            .admin-note { font-size: 1rem; padding: 1rem; }
+            .payment-note { font-size: 0.9rem; padding: 0.75rem; }
+        }
     </style>
 </head>
 <body>
+    <!-- Rest of your HTML remains exactly the same -->
     <header class="header">
         <nav class="nav">
             <div class="logo" id="logo">
@@ -98,6 +123,7 @@
     <div id="cartModal" class="modal"></div>
     <div id="checkoutModal" class="modal"></div>
     
+    <!-- Your JavaScript remains exactly the same -->
     <script>
     // #############################################################################
     // #################### START OF YOUR PRODUCT DATABASE #########################
