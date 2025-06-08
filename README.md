@@ -55,6 +55,7 @@
         .image-preview { max-width: 200px; max-height: 200px; border-radius: 8px; border: 1px solid #ddd; }
         .summary-line { display: flex; justify-content: space-between; font-size: 1rem; padding: 0.25rem 0; }
         .cart-total { text-align: right; padding: 1rem 0; font-size: 1.3rem; font-weight: bold; color: #1a365d; border-top: 1px solid #ddd; margin-top: 1rem; }
+        .payment-note { background-color: #f8f9fa; padding: 0.75rem; border-radius: 4px; margin: 0.5rem 0; text-align: center; font-size: 0.9rem; border-left: 3px solid #1a365d; }
     </style>
 </head>
 <body>
@@ -105,24 +106,7 @@
     // --> To update your products, DELETE the lines between here and the "END" comment,
     // --> then PASTE the new code generated from the admin panel.
     //
-    let products = [
-      {
-        "id": 1,
-        "name": "Bass Pro Jig Head",
-        "category": "jigs",
-        "price": 12.99,
-        "description": "Premium jig head perfect for bass fishing with realistic action.",
-        "image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop"
-      },
-      {
-        "id": 2,
-        "name": "Soft Plastic Worm",
-        "category": "soft-plastics",
-        "price": 8.49,
-        "description": "Lifelike soft plastic worm that attracts fish with its natural movement.",
-        "image": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop"
-      }
-    ];
+    let products = [];
     //
     // --> END OF YOUR PRODUCT DATABASE
     //
@@ -168,6 +152,8 @@
             <div class="modal-content">
                 <span class="close" onclick="closeCheckout()">&times;</span>
                 <h2 style="margin-bottom: 1rem; color: #1a365d;">Secure Checkout</h2>
+                <div class="payment-note">DM for Shipping Prices</div>
+                <div class="payment-note">DM for Direct Transfer</div>
                 <form id="checkoutForm" method="POST">
                     <input type="hidden" name="_subject" value="New Order from Lure Kings">
                     <input type="hidden" name="_cc" value="lure.kings.fishing.aus@gmail.com">
