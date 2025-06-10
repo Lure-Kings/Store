@@ -97,25 +97,10 @@
 
     <div id="cartModal" class="modal"></div>
     <div id="checkoutModal" class="modal"></div>
-    
-    <script>
-    // #############################################################################
-    // #################### START OF YOUR PRODUCT DATABASE #########################
-    // #############################################################################
-    //
-    // --> To update your products, DELETE the lines between here and the "END" comment,
-    // --> then PASTE the new code generated from the admin panel.
-    //
-    let products = [];
-    //
-    // --> END OF YOUR PRODUCT DATABASE
-    //
-    // #############################################################################
-
 
     // --- GLOBAL STATE ---
     let isAdminLoggedIn = false;
-    const ADMIN_PASSWORD = "Maxchingershambo08";
+    const ADMIN_PASSWORD ="Maxchinge"
     let clickCount = 0;
     let clickTimeout;
     let cart = [];
@@ -161,9 +146,7 @@
                     <input type="hidden" name="_template" value="table">
                     <input type="hidden" id="form-next-url" name="_next">
                     
-                    <div class="form-group">
-                        <label for="customerName">Full Name<span class="required-star">*</span></label>
-                        <input type="text" id="customerName" name="Name" required>
+            
                     </div>
                     <div class="form-group">
                         <label for="customerEmail">Email Address<span class="required-star">*</span></label>
@@ -357,21 +340,9 @@
 
     // --- RENDER AND UTILITY FUNCTIONS ---
 
-    // NEW: Central function to save the cart and refresh all relevant UI components
-    function saveAndRefreshCart() {
-        localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartCount();
-        updateCartDisplay();
-        updateCheckoutDisplay(); // Also refresh the checkout modal to keep it in sync
-    }
+    
 
-    // NEW: Functions to adjust item quantity from the cart
-    function increaseQuantity(productId) {
-        const item = cart.find(i => i.id === productId);
-        if (item) {
-            item.quantity++;
-        }
-        saveAndRefreshCart();
+ 
     }
 
     function decreaseQuantity(productId) {
